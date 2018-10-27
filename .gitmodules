@@ -1,0 +1,24 @@
+[submodule "src/PhylicaBundle"]
+	path = src/PhylicaBundle
+	url = git@gitlab.com:GBDD/phylica-bundle.git
+[submodule "src/HFIBundle"]
+	path = src/HFIBundle
+	url = git@gitlab.com:GBDD/hfi-bundle.git
+[submodule "src/PortalBundle"]
+	path = src/PortalBundle
+	url = git@gitlab.com:GBDD/portal-bundle.git
+[submodule "src/FrequentationBundle"]
+	path = src/FrequentationBundle
+	url = git@gitlab.com:GBDD/frequentation-bundle.git
+[submodule "vendor"]
+	path = vendor
+	url = git@gitlab.com:GBDD/vendor.git
+[submodule "web"]
+	path = web
+	url = git@gitlab.com:GBDD/web.git
+[submodule "src/CommersonBundle"]
+	path = src/CommersonBundle
+	url = https://gitlab.com/GBDD/commerson-bundle.git
+[submodule "src/OrnithoPinniBundle"]
+	path = src/OrnithoPinniBundle
+	url = git@gitlab.com:GBDD/ornitho.git

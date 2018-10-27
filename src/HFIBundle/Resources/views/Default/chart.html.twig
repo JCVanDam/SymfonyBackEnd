@@ -1,0 +1,16 @@
+
+{% block javascripts %}
+  <script src="{{ asset('js/libs/jquery/3.3.1/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/libs/chart/2.4.0/Chart.min.js') }}"></script>
+  <script src="{{ asset('js/libs/bootstrap/4.1.1/bootstrap.min.js') }}"></script>
+{% endblock %}
+
+{% block sonata_wrapper %}
+  {% block field %}
+    <div class="col-md-12 chart-item" id="graphVolumeDateContent">
+      <canvas id="graphVolumeDate" id="line"></canvas>
+    </div>
+  {% endblock %}
+  <div id="volumePerDate" style="display:none;">{{ admin.data }}</div>
+  <script src="{{ asset('js/HFIChart.js') }}"></script>
+{% endblock sonata_wrapper %}

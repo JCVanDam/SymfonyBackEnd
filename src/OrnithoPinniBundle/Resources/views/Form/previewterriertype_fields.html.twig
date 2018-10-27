@@ -1,0 +1,112 @@
+{% block previewterrier_widget %}
+
+  <style>
+    .loader {
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #008d4c;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite; /* Safari */
+      animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+<div style="margin-top: -25px;">
+  <center>
+    <button style="width:30%" type="button" class="btn btn-default" data-toggle="modal" data-target="#{{id}}_modal">
+      ►►► Liste des terriers ◄◄◄
+    </button>
+  </center>
+
+  <!-- Modal -->
+  <div id="{{id}}_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 id="#{{id}}-modal-title" class="modal-title"><strong>Aucun terrier...</strong></h4>
+        </div>
+        <div id="#{{id}}-modal-body" class="modal-body">
+          <p>Vous devez premièrement saisir l'espèce puis la saison pour afficher les différents passages enregistrés !</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+  <script>
+    $(document).ready(function(){
+      function getSeason(){
+        var parent = document.getElementById("{{id}}_modal").parentNode.parentNode.parentNode.parentNode;
+        var season = null;
+        $(parent).find("select").each(function(index){
+              if(this.id.includes("_saison01")){
+                if(this.value!=""){
+                  season = this.value;
+                }
+              }
+              if(this.id.includes("_saison02")){
+                if(this.value!=""){
+                  season = this.value;
+                }
+              }
+        });
+        return season;
+      }
+      function getSpecy(){
+        var parent = document.getElementById("{{id}}_modal").parentNode.parentNode.parentNode.parentNode;
+        var specy = null;
+        $(parent).find("select").each(function(index){
+              if(this.id.includes("_choixSaisonEspece")){
+                if(this.value!=""){
+                  specy = this.value;
+                }
+              }
+        });
+        return specy;
+      }
+
+      function {{id}}load_datas(){
+        var season = getSeason();
+        var specy = getSpecy();
+        if(season!=null && specy!=null){
+          document.getElementById("#{{id}}-modal-title").innerHTML = "Chargement...";
+          document.getElementById("#{{id}}-modal-body").innerHTML = "<center><div class='loader'></div></center>";
+          $.ajax({
+              url: "/ornithopinni/DEMOS/get_passages_from_season",
+              type: "GET",
+              dataType: "html",
+              data: {
+                  season: season,
+                  specy: specy
+              },
+              success: function(answer){
+                  document.getElementById("#{{id}}-modal-title").innerHTML = "Terriers de " + specy;
+                  document.getElementById("#{{id}}-modal-body").innerHTML = answer;
+              }
+          });
+        }
+
+      }
+
+      $('#{{id}}_modal').on('shown.bs.modal', function (){
+          {{id}}load_datas();
+       })
+    });
+  </script>
+{% endblock %}

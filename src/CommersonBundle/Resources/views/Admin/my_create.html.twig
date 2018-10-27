@@ -1,0 +1,30 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/my_javascript.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navbar_title %}
+    {{ parent() }}
+{% endblock %}
+
+{%- block actions -%}
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block tab_menu -%}
+    {{ parent() }}
+{%- endblock -%}
+
+{% block form %}
+    {{ parent() }}
+{% endblock %}

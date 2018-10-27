@@ -1,0 +1,52 @@
+{% block carto_widget %}
+  <!-- <link rel="stylesheet" href="{{ asset('css/map.css') }}" type="text/css" /> -->
+  <link rel="stylesheet" href="{{ asset('css/ol.css') }}" type="text/css">
+
+  <div class="box box-success">
+    <button id="taaf-hide-map" type="button" class="btn btn-primary map-button">Cacher le fond de carte</button>
+    <div id="taaf-map" >
+      <div class="box-header">
+        <h4 class="box-title">
+          CarteOO
+        </h4>
+      </div>
+      <p class="text-explanation">Selectionnez votre district.</p>
+      <select id="type" style="width:200px; margin-left:10px; margin-bottom:10px;">
+        <option value="Kerguelen">Kerguelen</option>
+        <option value="Amsterdam">Amsterdam</option>
+        <option value="Crozet">Crozet</option>
+      </select>
+      <p class="text-explanation">Deplacez votre fichier GPX directement sur la carte.</p>
+      <div class="box-body">
+        <div class="sonata-ba-collapsed-fields">
+          <div class="taaf_general_container">
+            <div>
+              <div id="map" class="map taaf_map_container">
+                <button id="taaf-hide-label" type="button" class="btn btn-primary map-button">Cacher les labels</button>
+                <button id="taaf-select-manually" type="button" class="btn btn-primary map-button">Placer un point sur la carte</button>
+              </div>
+              <div id="taaf-name">
+                <div id="taaf-name-content"></div>
+              </div>
+            </div>
+          </div>
+          <div style="display: none;" id=taff-test></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{{ asset('js/polyfill/polyfill.js') }}"></script>
+  <script src="{{ asset('js/openlayers/4.6.5/ol.js') }}"></script>
+  <script src="{{ asset('js/map.js') }}"></script>
+    {{ form_label(form.latitude) }}
+    {{ form_errors(form.latitude) }}
+    {{ form_widget(form.latitude) }}
+
+    {{ form_label(form.longitude) }}
+    {{ form_errors(form.longitude) }}
+    {{ form_widget(form.longitude) }}
+
+    {{ form_label(form.altitude) }}
+    {{ form_errors(form.altitude) }}
+    {{ form_widget(form.altitude) }}
+  {% endblock %}

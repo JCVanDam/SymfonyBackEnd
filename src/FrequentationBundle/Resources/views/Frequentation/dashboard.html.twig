@@ -1,0 +1,110 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('js/libs/jQuery-QueryBuilder-master/dist/css/query-builder.default.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/chart.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/map.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/ol.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/loader.css') }}" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('js/libs/jquery/3.3.1/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/libs/chart/2.4.0/Chart.min.js') }}"></script>
+  <script src="{{ asset('js/libs/popper/1.14.3/umd/popper.min.js') }}"></script>
+  <script src="{{ asset('js/libs/bootstrap/4.1.1/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/libs/openlayers/4.6.5/ol.js') }}"></script>
+  <script src="{{ asset('js/libs/datepicker/0.6.5/datepicker.js') }}"></script>
+  <script src="{{ asset('js/libs/doT/doT.js') }}"></script>
+  <script src="{{ asset('js/libs/jQuery.extendext/jQuery.extendext.js') }}"></script>
+  <script src="{{ asset('js/libs/moment/moment.js') }}"></script>
+  <script src="{{ asset('js/libs/jQuery-QueryBuilder-master/dist/js/query-builder.js') }}"></script>
+{% endblock %}
+
+{% block sonata_top_nav_menu %}
+  <div class="navbar-custom-menu">
+    <a class="btn btn-primary" style="background-color: rgb(0, 139, 95); margin-top: 7px;" href="{{ url('sonata_user_admin_security_logout') }}">{{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}</a>
+  </div>
+{% endblock %}
+
+{% block sonata_page_content %}
+  <div id="volumePerDate" style="display:none;">{{volumePerDate}}</div>
+  <div id="volumeAge" style="display:none;">{{volumeAge}}</div>
+  <div id="coordinate" style="display:none;">{{coordinate}}</div>
+  <div class="container">
+    <div class="collapse-title">
+      <i class="fa fa-angle-down"></i>
+      <h1 data-toggle="collapse" data-target="#general">Observation générale</h1>
+    </div>
+    <div id="general" class="collapse show chart-container">
+      <div style="display:flex;">
+        <div>
+          <table id="volume-per-year" class="table static-table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Année</th>
+                <th scope="col">Nombre Phylica</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in volumePerYear %}
+              <tr>
+                <td>{{item.year}}</td>
+                <td>{{item.counter}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <table id="general-data" class="table static-table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Total</th>
+                <th scope="col">Moyenne de Phylica planté par an</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ total }}</td>
+                <td>{{ average }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="mapContainer">
+          <div id="map" class="map" style="width:600px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="collapse-title">
+      <i class="fa fa-angle-down"></i>
+      <h1 data-toggle="collapse" data-target="#specific">Requêtes spécifiques</h1>
+    </div>
+    <div id="specific" class="collapse show chart-container">
+      <div class="row">
+        <div class="col-md-11" id="builder-import_export"></div>
+      </div>
+      <button class="col-md-2 btn btn-primary parse-sql" id="btn-get-sql" data-target="import_export" data-stmt="false">Chercher</button>
+      <div class="row">
+      </div>
+      <div class="row">
+        <!-- style="width:400px;height:400px;"  -->
+        <div class="col-md-4 chart-item" id="graphVolumeAgeContent">
+          <canvas id="graphVolumeAge"></canvas>
+        </div>
+        <!-- style="width:600px;" -->
+        <div class="col-md-6 chart-item" id="graphVolumeDateContent">
+          <canvas id="graphVolumeDate" id="line"></canvas>
+        </div>
+      </div>
+    </div>
+    <div id="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+  <div style="display: none;" id="serverIp" value="{{ server_ip }}">{{ server_ip }}</div>
+  {{ parent() }}
+  <script src="{{ asset('js/chart.js') }}"></script>
+{% endblock %}

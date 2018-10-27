@@ -1,0 +1,101 @@
+security:
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+    acl:
+        connection: user
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        admin:
+            pattern:            /admin(.*)
+            context:            user
+            form_login:
+                provider:       fos_userbundle
+                login_path:     /admin/login
+                use_forward:    false
+                check_path:     /admin/login_check
+                failure_path:   null
+                default_target_path: /admin/application
+                always_use_default_target_path: true
+            logout:
+                path:           /admin/logout
+                target:         /admin/login
+            anonymous:          true
+        main:
+            pattern:             .*
+            context:             user
+            form_login:
+                provider:       fos_userbundle
+                login_path:     /login
+                use_forward:    false
+                check_path:     /login_check
+                failure_path:   null
+            logout:             true
+            anonymous:          true
+    access_control:
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/, role: ROLE_USER }
+    role_hierarchy:
+    #     ROLE_POST_AUTHOR: ROLE_USER
+        # ROLE_ADMIN: [ ROLE_USER, ROLE_POST_AUTHOR]
+    #     ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
+        ROLE_USER:
+          - ROLE_SONATA_ADMIN_HFI_PHYLICA_CREATE
+          - ROLE_SONATA_ADMIN_HFI_PHYLICA_DELETE
+          - ROLE_SONATA_ADMIN_HFI_PHYLICA_EDIT
+          - ROLE_SONATA_ADMIN_HFI_PHYLICA_LIST
+          - ROLE_SONATA_ADMIN_HFI_PHYLICA_VIEW
+          - ROLE_SONATA_ADMIN_HFI_SUIVI_CREATE
+          - ROLE_SONATA_ADMIN_HFI_SUIVI_DELETE
+          - ROLE_SONATA_ADMIN_HFI_SUIVI_EDIT
+          - ROLE_SONATA_ADMIN_HFI_SUIVI_LIST
+          - ROLE_SONATA_ADMIN_HFI_SUIVI_VIEW
+          - ROLE_SONATA_ADMIN_DASHBOARD_ERADICATION_CREATE
+          - ROLE_SONATA_ADMIN_DASHBOARD_ERADICATION_DELETE
+          - ROLE_SONATA_ADMIN_DASHBOARD_ERADICATION_EDIT
+          - ROLE_SONATA_ADMIN_DASHBOARD_ERADICATION_LIST
+          - ROLE_SONATA_ADMIN_DASHBOARD_ERADICATION_VIEW
+          - ROLE_SONATA_ADMIN_DASHBOARD_PHYLICA_CREATE
+          - ROLE_SONATA_ADMIN_DASHBOARD_PHYLICA_DELETE
+          - ROLE_SONATA_ADMIN_DASHBOARD_PHYLICA_EDIT
+          - ROLE_SONATA_ADMIN_DASHBOARD_PHYLICA_LIST
+          - ROLE_SONATA_ADMIN_DASHBOARD_PHYLICA_VIEW
+          - ROLE_SONATA_ADMIN_ERADICATION_CREATE
+          - ROLE_SONATA_ADMIN_ERADICATION_DELETE
+          - ROLE_SONATA_ADMIN_ERADICATION_EDIT
+          - ROLE_SONATA_ADMIN_ERADICATION_LIST
+          - ROLE_SONATA_ADMIN_ERADICATION_VIEW
+          - ROLE_SONATA_ADMIN_FICHETERRAIN_CREATE
+          - ROLE_SONATA_ADMIN_FICHETERRAIN_DELETE
+          - ROLE_SONATA_ADMIN_FICHETERRAIN_EDIT
+          - ROLE_SONATA_ADMIN_FICHETERRAIN_LIST
+          - ROLE_SONATA_ADMIN_FICHETERRAIN_VIEW
+          - ROLE_SONATA_ADMIN_METHODOLOGIE_INVERTEBRE_CREATE
+          - ROLE_SONATA_ADMIN_METHODOLOGIE_INVERTEBRE_DELETE
+          - ROLE_SONATA_ADMIN_METHODOLOGIE_INVERTEBRE_EDIT
+          - ROLE_SONATA_ADMIN_METHODOLOGIE_INVERTEBRE_LIST
+          - ROLE_SONATA_ADMIN_METHODOLOGIE_INVERTEBRE_VIEW
+          - ROLE_SONATA_ADMIN_DESCRIPTION_INVERTEBRE_CREATE
+          - ROLE_SONATA_ADMIN_DESCRIPTION_INVERTEBRE_DELETE
+          - ROLE_SONATA_ADMIN_DESCRIPTION_INVERTEBRE_EDIT
+          - ROLE_SONATA_ADMIN_DESCRIPTION_INVERTEBRE_LIST
+          - ROLE_SONATA_ADMIN_DESCRIPTION_INVERTEBRE_VIEW
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VEGETATION_CREATE
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VEGETATION_DELETE
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VEGETATION_EDIT
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VEGETATION_LIST
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VEGETATION_VIEW
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VERTEBRE_CREATE
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VERTEBRE_DELETE
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VERTEBRE_EDIT
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VERTEBRE_LIST
+          - ROLE_SONATA_ADMIN_DESCRIPTION_VERTEBRE_VIEW
+          - ROLE_SONATA_ADMIN_OBSERVATION_CREATE
+          - ROLE_SONATA_ADMIN_OBSERVATION_DELETE
+          - ROLE_SONATA_ADMIN_OBSERVATION_EDIT
+          - ROLE_SONATA_ADMIN_OBSERVATION_LIST
+          - ROLE_SONATA_ADMIN_OBSERVATION_VIEW

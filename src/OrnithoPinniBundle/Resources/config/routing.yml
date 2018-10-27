@@ -1,0 +1,7 @@
+ornitho_pinni_homepage:
+    path:     /
+    defaults: { _controller: OrnithoPinniBundle:Default:index }
+
+ornitho_pinni_ajax_season:
+    path:     /DEMOS/get_passages_from_season
+    defaults: { _controller: OrnithoPinniBundle:Default:get_passages_from_season }

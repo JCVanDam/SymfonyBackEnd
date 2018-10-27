@@ -1,0 +1,378 @@
+services:
+    static_list:
+            class: OrnithoPinniBundle\Services\StaticList
+            public: true
+
+    #GENERAL
+    sonata.admin.manip:
+            class: OrnithoPinniBundle\Admin\General\ManipAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\General\Manip, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Saisie protocole", show_in_dashboard: true }
+
+    sonata.admin.manip.surveillance:
+            class: OrnithoPinniBundle\Admin\General\ManipSurveillanceAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\General\ManipSurveillance, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Saisie surveillance" }
+
+    sonata.admin.meteo:
+            class: OrnithoPinniBundle\Admin\General\MeteoAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\General\Meteo, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Météo", show_in_dashboard: false }
+
+    sonata.admin.position.gps:
+            class: OrnithoPinniBundle\Admin\General\Position_GPSAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\General\Position_GPS, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Position GPS", show_in_dashboard: false }
+
+    sonata.admin.protocole:
+            class: OrnithoPinniBundle\Admin\General\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\General\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Protocole", show_in_dashboard: false}
+
+    sonata.admin.protocole.surveillance:
+            class: OrnithoPinniBundle\Admin\General\ProtocoleSurveillanceAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\General\ProtocoleSurveillance, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "ProtocoleSurveillance", show_in_dashboard: false}
+
+    #CMTG_INDIFF
+    sonata.admin.cmtg.protocole:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_Protocole", show_in_dashboard: false}
+
+    sonata.admin.saisie:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\SaisieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\Saisie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Saisie", show_in_dashboard: false}
+
+    sonata.admin.cmtg.protocole.classe:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\ProtocoleClasseAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\ProtocoleClasse, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_ProtocoleClasse", show_in_dashboard: false}
+
+    sonata.admin.cmtg.protocole.precis:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\ProtocolePrecisAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\ProtocolePrecis, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_ProtocolePrecis", show_in_dashboard: false}
+
+    sonata.admin.cmtg.protocole.territoire:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\ProtocoleTerritoireAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\ProtocoleTerritoire, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_ProtocoleTerritoire", show_in_dashboard: false}
+
+    sonata.admin.cmtg.protocole.min.max:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\ProtocoleMinMaxAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\ProtocoleMinMax, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_ProtocoleMinMax", show_in_dashboard: false}
+
+    sonata.admin.cmtg.comptage.precis:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\ComptagePrecisAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\ComptagePrecis, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_ComptagePrecis", show_in_dashboard: false}
+
+    sonata.admin.cmtg.nid:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\NidAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\Nid, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_Nid", show_in_dashboard: false}
+
+    sonata.admin.cmtg.comptage.min.max:
+            class: OrnithoPinniBundle\Admin\CMTG_INDIFF\ComptageMinMaxAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_INDIFF\ComptageMinMax, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_INDIFF_ComptageMinMax", show_in_dashboard: false}
+
+    #CMTG_PINNI
+    sonata.admin.cmtg.pinni.protocole:
+            class: OrnithoPinniBundle\Admin\CMTG_PINNI\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_PINNI\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_PINNI_Protocole", show_in_dashboard: false}
+
+    sonata.admin.cmtg.pinni.comptage:
+            class: OrnithoPinniBundle\Admin\CMTG_PINNI\ComptageAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_PINNI\Comptage, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_PINNI_Comptage", show_in_dashboard: false}
+
+    #CMTG_OISEAUX_MARINS
+    sonata.admin.cmtg.oiseaux.marins.protocole:
+            class: OrnithoPinniBundle\Admin\CMTG_OISEAUX_MARINS\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_OISEAUX_MARINS\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_OISEAUX_MARINS_Protocole", show_in_dashboard: false}
+
+    sonata.admin.cmtg.oiseaux.marins.passage.sur.colonie:
+            class: OrnithoPinniBundle\Admin\CMTG_OISEAUX_MARINS\PassageSurColonieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_OISEAUX_MARINS\PassageSurColonie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_OISEAUX_MARINS_Passage_sur_colonie", show_in_dashboard: false}
+
+    sonata.admin.cmtg.oiseaux.marins.comptage:
+            class: OrnithoPinniBundle\Admin\CMTG_OISEAUX_MARINS\ComptageAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_OISEAUX_MARINS\Comptage, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_OISEAUX_MARINS_Comptage", show_in_dashboard: false}
+
+    sonata.admin.cmtg.oiseaux.marins.colonie:
+            class: OrnithoPinniBundle\Admin\CMTG_OISEAUX_MARINS\ColonieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_OISEAUX_MARINS\Colonie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Ajout colonie suivi", show_in_dashboard: true}
+
+    sonata.admin.cmtg.oiseaux.marins.saisie:
+            class: OrnithoPinniBundle\Admin\CMTG_OISEAUX_MARINS\SaisieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_OISEAUX_MARINS\Saisie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_OISEAUX_MARINS_Saisie", show_in_dashboard: false}
+
+    #SREP
+    sonata.admin.srep.protocole:
+            class: OrnithoPinniBundle\Admin\SREP\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\SREP\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "SREP_Protocole", show_in_dashboard: false}
+
+    sonata.admin.srep.passage.sur.colonie:
+            class: OrnithoPinniBundle\Admin\SREP\PassageSurColonieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\SREP\PassageSurColonie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "SREP_Passage_sur_colonie", show_in_dashboard: false}
+
+    sonata.admin.srep.comptage:
+            class: OrnithoPinniBundle\Admin\SREP\ComptageAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\SREP\Comptage, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "SREP_Comptage", show_in_dashboard: false}
+
+    sonata.admin.srep.colonie:
+            class: OrnithoPinniBundle\Admin\SREP\ColonieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\SREP\Colonie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "SREP_Colonie", show_in_dashboard: false}
+
+    #DEMOS
+    sonata.admin.demos.protocole:
+            class: OrnithoPinniBundle\Admin\DEMOS\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\DEMOS\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "DEMOS_Protocole", show_in_dashboard: false}
+
+    sonata.admin.demos.passage.sur.terrier:
+            class: OrnithoPinniBundle\Admin\DEMOS\PassageSurTerrierAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\DEMOS\PassageSurTerrier, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "DEMOS_PassageSurTerrier", show_in_dashboard: false}
+
+    sonata.admin.demos.information.premier.passage:
+            class: OrnithoPinniBundle\Admin\DEMOS\InformationPremierPassageAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\DEMOS\InformationPremierPassage, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "DEMOS_InformationPremierPassage", show_in_dashboard: false}
+
+    sonata.admin.demos.terrier:
+            class: OrnithoPinniBundle\Admin\DEMOS\TerrierAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\DEMOS\Terrier, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "DEMOS_Terrier", show_in_dashboard: false}
+
+    #CMTG_GOEL
+    sonata.admin.cmtg.goel.protocole:
+            class: OrnithoPinniBundle\Admin\CMTG_GOEL\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_GOEL\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_GOEL_Protocole", show_in_dashboard: false}
+
+    sonata.admin.cmtg.goel.passage.sur.colonie:
+            class: OrnithoPinniBundle\Admin\CMTG_GOEL\PassageSurColonieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_GOEL\PassageSurColonie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_GOEL_PassageSurColonie", show_in_dashboard: false}
+
+    sonata.admin.cmtg.goel.colonie:
+            class: OrnithoPinniBundle\Admin\CMTG_GOEL\ColonieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_GOEL\Colonie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_GOEL_Colonie", show_in_dashboard: false}
+
+    sonata.admin.cmtg.goel.nid:
+            class: OrnithoPinniBundle\Admin\CMTG_GOEL\NidAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\CMTG_GOEL\Nid, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "CMTG_GOEL_Nid", show_in_dashboard: false}
+
+    #BAGUE
+    sonata.admin.bague:
+            class: OrnithoPinniBundle\Admin\Bague\ControleRepriseBagueAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\Bague\ControleRepriseBague, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "Contrôle et reprise de bague", show_in_dashboard: true}
+
+    #PC
+    sonata.admin.pc.protocole:
+            class: OrnithoPinniBundle\Admin\PC\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_Protocole", show_in_dashboard: false}
+
+    sonata.admin.pc.protocole.permanent:
+            class: OrnithoPinniBundle\Admin\PC\ProtocolePermanentAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\ProtocolePermanent, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_ProtocolePermanent", show_in_dashboard: false}
+
+    sonata.admin.pc.protocole.transect:
+            class: OrnithoPinniBundle\Admin\PC\ProtocoleTransectAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\ProtocoleTransect, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_ProtocoleTransect", show_in_dashboard: false}
+
+    sonata.admin.pc.point.comptage.transect:
+            class: OrnithoPinniBundle\Admin\PC\PointComptageTransectAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\PointComptageTransect, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_PointComptageTransect", show_in_dashboard: false}
+
+    sonata.admin.pc.point.comptage.permanent:
+            class: OrnithoPinniBundle\Admin\PC\PointComptagePermanentAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\PointComptagePermanent, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_PointComptagePermanent", show_in_dashboard: false}
+
+    sonata.admin.pc.piquet:
+            class: OrnithoPinniBundle\Admin\PC\PiquetAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\Piquet, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_Piquet", show_in_dashboard: false}
+
+    sonata.admin.pc.donnees.terrier:
+            class: OrnithoPinniBundle\Admin\PC\DonneesTerrierAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\DonneesTerrier, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_DonneesTerrier", show_in_dashboard: false}
+
+    sonata.admin.pc.vegetation:
+            class: OrnithoPinniBundle\Admin\PC\VegetationAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\PC\Vegetation, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "PC_Vegetation", show_in_dashboard: false}
+
+    #TRSC_HYP
+    sonata.admin.trsc.hyp.protocole:
+            class: OrnithoPinniBundle\Admin\TRSC_HYP\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_HYP\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_HYP_Protocole", show_in_dashboard: false}
+
+    sonata.admin.trsc.hyp.saisie:
+            class: OrnithoPinniBundle\Admin\TRSC_HYP\SaisiePointTransectAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_HYP\SaisiePointTransect, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_HYP_SaisiePointTransect", show_in_dashboard: false}
+
+    sonata.admin.trsc.hyp.observation:
+            class: OrnithoPinniBundle\Admin\TRSC_HYP\ObservationAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_HYP\Observation, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_HYP_Observation", show_in_dashboard: false}
+
+    sonata.admin.trsc.hyp.transect.gps:
+            class: OrnithoPinniBundle\Admin\TRSC_HYP\TransectGPSAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_HYP\TransectGPS, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_HYP_TransectGPS", show_in_dashboard: false}
+
+    #TRSC_EPI
+    sonata.admin.trsc.epi.protocole:
+            class: OrnithoPinniBundle\Admin\TRSC_EPI\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_EPI\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_EPI_Protocole", show_in_dashboard: false}
+
+    sonata.admin.trsc.epi.saisie:
+            class: OrnithoPinniBundle\Admin\TRSC_EPI\SaisiePointTransectAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_EPI\SaisiePointTransect, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_EPI_SaisiePointTransect", show_in_dashboard: false}
+
+    sonata.admin.trsc.epi.observation:
+            class: OrnithoPinniBundle\Admin\TRSC_EPI\ObservationAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_EPI\Observation, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_EPI_Observation", show_in_dashboard: false}
+
+    sonata.admin.trsc.epi.transect.gps:
+            class: OrnithoPinniBundle\Admin\TRSC_EPI\TransectGPSAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\TRSC_EPI\TransectGPS, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "TRSC_EPI_TransectGPS", show_in_dashboard: false}
+
+    #ECHOUAGE
+    sonata.admin.echouage.protocole:
+            class: OrnithoPinniBundle\Admin\ECHOUAGE\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\ECHOUAGE\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "ECHOUAGE_Protocole", show_in_dashboard: false}
+
+    sonata.admin.echouage.protocole.en.tournee:
+            class: OrnithoPinniBundle\Admin\ECHOUAGE\ProtocoleEnTourneeAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\ECHOUAGE\ProtocoleEnTournee, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "ECHOUAGE_ProtocoleEnTournee", show_in_dashboard: false}
+
+    sonata.admin.echouage.protocole.opportuniste:
+            class: OrnithoPinniBundle\Admin\ECHOUAGE\ProtocoleOpportunisteAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\ECHOUAGE\ProtocoleOpportuniste, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "ECHOUAGE_ProtocoleOpportuniste", show_in_dashboard: false}
+
+    sonata.admin.echouage.decouverte:
+            class: OrnithoPinniBundle\Admin\ECHOUAGE\DecouverteAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\ECHOUAGE\Decouverte, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "ECHOUAGE_Decouverte", show_in_dashboard: false}
+
+    sonata.admin.echouage.biometrie:
+            class: OrnithoPinniBundle\Admin\ECHOUAGE\BiometrieAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\ECHOUAGE\Biometrie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "ECHOUAGE_Biometrie", show_in_dashboard: false}
+
+    #SAGIR
+    sonata.admin.sagir.protocole:
+            class: OrnithoPinniBundle\Admin\SAGIR\ProtocoleAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\SAGIR\Protocole, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "SAGIR_Protocole", show_in_dashboard: false}
+
+    sonata.admin.sagir.decouverte:
+            class: OrnithoPinniBundle\Admin\SAGIR\DecouverteAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\SAGIR\Decouverte, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "SAGIR_Decouverte", show_in_dashboard: false}
+
+    sonata.admin.sagir.animal:
+            class: OrnithoPinniBundle\Admin\SAGIR\AnimalAdmin
+            arguments: [~, OrnithoPinniBundle\Entity\SAGIR\Animal, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Ornithologie & Pinnipèdes", label: "SAGIR_Animal", show_in_dashboard: false}
+
+
+
+twig:
+    form_themes:
+        - 'OrnithoPinniBundle:Form:previewterriertype_fields.html.twig'
+        - 'OrnithoPinniBundle:Form:customintegertype_fields.html.twig'

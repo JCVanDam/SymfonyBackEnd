@@ -1,0 +1,64 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/map.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/ol.css') }}" type="text/css">
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/libs/polyfill/polyfill.js') }}"></script>
+  <script src="{{ asset('js/libs/openlayers/4.6.5/ol.js') }}"></script>
+{% endblock %}
+
+{% block navbar_title %}
+  Créer
+  {% if app.session.get('service') == "phylica" %}
+    un individu Phylica
+  {% endif %}
+  {% if app.session.get('service') == "frequentation" %}
+    une frequentation
+  {% endif %}
+{% endblock %}
+
+{% block form %}
+  <div class="box box-success">
+    <button id="taaf-hide-map" type="button" class="btn btn-primary map-button">Cacher le fond de carte</button>
+    <div id="taaf-map" >
+      <div class="box-header">
+        <h4 class="box-title">
+          Carte
+        </h4>
+      </div>
+      {% if app.session.get('district') %}
+        <p class="text-explanation">Selectionnez votre district.</p>
+        <select id="type" style="width:200px; margin-left:10px; margin-bottom:10px;">
+          {% for district in app.session.get('district') %}
+              <option value="{{ district }}">{{ district }}</option>
+          {% endfor %}
+        </select>
+      {% endif %}
+      <p class="text-explanation">Deplacez votre fichier GPX directement sur la carte.</p>
+      <div class="box-body">
+        <div class="sonata-ba-collapsed-fields">
+          <div class="taaf_general_container">
+            <div>
+              <div id="map" class="map taaf_map_container">
+                <button id="taaf-hide-label" type="button" class="btn btn-primary map-button">Cacher les labels</button>
+                <button id="taaf-select-manually" type="button" class="btn btn-primary map-button">Placer un point sur la carte</button>
+              </div>
+              <div id="taaf-name">
+                <div id="taaf-name-content"></div>
+              </div>
+            </div>
+          </div>
+          <div style="display: none;" id="label"></div>
+          <div style="display: none;" id="serverIp" value="{{ server_ip }}">{{ server_ip }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ parent() }}
+  <script src="{{ asset('js/map.js') }}"></script>
+{% endblock %}

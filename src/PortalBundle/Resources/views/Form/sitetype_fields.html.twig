@@ -1,0 +1,123 @@
+{% block site_widget %}
+    <!-- Génération du CSS -->
+    <style>
+      .parent-border{
+          border: solid #ededed 1px;
+          padding: 1%;
+          background-color: #f9f9f9;
+          margin-top:1%;
+          margin-left:15px;
+          margin-right:15px;
+      }
+
+      #{{id}}_collapse_btn{
+        margin-left: 0px;
+        margin-right: 0px;
+        cursor:pointer;
+      }
+    </style>
+
+    <!-- Génération du HTML -->
+      {% set param_districts = ['Kerguelen', 'Amsterdam', 'Crozet'] %}
+      {{ block('choice_widget') }}
+      <div onclick="change(this);" id="{{id}}_collapse_btn" class="row" data-toggle="collapse" data-target="#{{id}}_collapse_site">
+        <center>
+          <span class="span-glyph my-vertical-center glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+        </center>
+      </div>
+      <div class="row collapse" id="{{id}}_collapse_site">
+        <div class="parent-border">
+          <div class="form-group">
+            <label for="{{id}}_district">District</label>
+            <select class="form-control" id="{{id}}_district">
+              <option selected value="">---</option>
+              {% for district in param_districts %}
+                  <option value="{{district}}">{{district}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="{{id}}_zone">Zone</label>
+            <select class="form-control" id="{{id}}_zone">
+              <option selected value="">---</option>
+            </select>
+          </div>
+          <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+          <strong>Info!</strong> Ces champs ne sont pas obligatoires mais ils vous permettent d'affiner la recherche de '{{label}}'.
+        </div>
+      </div>
+    <script>
+      $(document).ready(function(){
+          document.getElementById("{{id}}_district").onchange = sort_from_district;
+          document.getElementById("{{id}}_zone").onchange = sort_from_zone;
+
+          var all_sites = {{ choices|json_encode|raw }};
+
+          var all = {};
+          var allId = {};
+
+          for(var i=0; i<all_sites.length; i++){
+              all[(all_sites[i].label.split(", "))[0]]=[];
+          }
+          for(var i=0; i<all_sites.length; i++){
+              (all[(all_sites[i].label.split(", "))[0]])[(all_sites[i].label.split(", "))[1]] = [];
+          }
+          for(var i=0; i<all_sites.length; i++){
+              (all[(all_sites[i].label.split(", "))[0]])[(all_sites[i].label.split(", "))[1]].push(all_sites[i].label);
+              allId[all_sites[i].label] = (all_sites[i].label.split(", "))[3];
+          }
+
+          function remove_all(selectId){
+            if(selectId == "{{id}}"){
+              document.getElementById(selectId).options.length = 0;
+            }else{
+              document.getElementById(selectId).options.length = 1;
+            }
+          }
+
+          function add_from_district(district){
+            var selectZone =document.getElementById("{{id}}_zone");
+            var selectSite =document.getElementById("{{id}}");
+            for(var zone in all[district]){
+              for(var site in (all[district])[zone]){
+                var opt = document.createElement('option');
+                opt.innerHTML = ((all[district])[zone])[site];
+                opt.value = allId[opt.innerHTML];
+                selectSite.appendChild(opt);
+              }
+              var opt = document.createElement('option');
+              opt.value = zone;
+              opt.innerHTML = zone;
+              selectZone.appendChild(opt);
+            }
+          }
+
+          function add_from_zone(zone){
+            var selectSite =document.getElementById("{{id}}");
+            for(var sites in (all[document.getElementById("{{id}}_district").value])[zone]){
+              var opt = document.createElement('option');
+              opt.innerHTML = ((all[document.getElementById("{{id}}_district").value])[zone])[sites];
+              opt.value = allId[opt.innerHTML];
+              selectSite.appendChild(opt);
+            }
+          }
+
+          function sort_from_district(district){
+              console.log("sort_from_district", this.value);
+              remove_all("{{id}}");
+              remove_all("{{id}}_zone");
+              add_from_district(district.val);
+          }
+
+          function sort_from_zone(zone){
+              console.log("sort_from_zone", this.value);
+              remove_all("{{id}}");
+              add_from_zone(zone.val);
+          }
+
+      });
+      function change(obj){
+          $(obj).find('span').toggleClass('glyphicon-menu-down').toggleClass('glyphicon-menu-up');
+      }
+    </script>
+{% endblock %}

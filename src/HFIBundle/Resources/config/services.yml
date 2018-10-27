@@ -1,0 +1,76 @@
+services:
+    sonata.admin.observation:
+      class: HFIBundle\Admin\ObservationAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Observation' }
+      arguments: [~, HFIBundle\Entity\Observation, ~]
+
+    sonata.admin.ficheTerrain:
+      class: HFIBundle\Admin\FicheTerrainAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Fiche Terrain' }
+      arguments: [~, HFIBundle\Entity\FicheTerrain, ~]
+
+    # sonata.admin.toponyme:
+    #   class: HFIBundle\Admin\ToponymeAdmin
+    #   tags:
+    #     - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Toponyme', show_in_dashboard: false }
+    #   arguments: [~, HFIBundle\Entity\Toponyme, ~]
+
+    sonata.admin.eradication:
+      class: HFIBundle\Admin\EradicationAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Eradication' }
+      arguments: [~, HFIBundle\Entity\Eradication, ~]
+
+    sonata.admin.description_vegetation:
+      class: HFIBundle\Admin\DescriptionVegetationAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Observation végétation' }
+      arguments: [~, HFIBundle\Entity\DescriptionVegetation, ~]
+
+    sonata.admin.description_vertebre:
+      class: HFIBundle\Admin\DescriptionVertebreAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Observation vertébrés' }
+      arguments: [~, HFIBundle\Entity\DescriptionVertebre, ~]
+
+    sonata.admin.methodologie_invertebre:
+      class: HFIBundle\Admin\MethodologieInvertebreAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Méthodologie Invértébrés' }
+      arguments: [~, HFIBundle\Entity\MethodologieInvertebre, ~]
+
+    sonata.admin.description_invertebre:
+      class: HFIBundle\Admin\DescriptionInvertebreAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Habitat Flore Invertébré', label: 'Observation invertébrés' }
+      arguments: [~, HFIBundle\Entity\DescriptionInvertebre, ~]
+
+    sonata.admin.hfi.phylica:
+      class: HFIBundle\Admin\PhylicaAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Restauration Phylica', label: 'Phylica' }
+      arguments: [~, HFIBundle\Entity\Phylica, ~]
+
+    sonata.admin.hfi.suivi:
+      class: HFIBundle\Admin\SuiviAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Restauration Phylica', label: 'Suivi' }
+      arguments: [~, HFIBundle\Entity\Suivi, ~]
+
+    usefull.hfi.static_list:
+      class: HFIBundle\Services\StaticList
+      public: true
+
+    sonata.admin.dashboard_phylica:
+      class: HFIBundle\Admin\DashboardPhylicaAdmin
+      arguments: [~, ~, HFIBundle:DashboardPhylica]
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Tableau de bords', label: 'Restauration du Phylica' }
+
+    sonata.admin.dashboard_eradication:
+      class: HFIBundle\Admin\DashboardEradicationAdmin
+      arguments: [~, ~, HFIBundle:DashboardEradication]
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Tableau de bords', label: 'Eradication' }

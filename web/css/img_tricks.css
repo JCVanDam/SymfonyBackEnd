@@ -1,0 +1,15 @@
+.hover-zoom {
+	width: 100%;
+	height: 350px;
+	object-fit: cover;
+	-webkit-transition: .3s ease-in-out;
+	transition: .3s ease-in-out;
+	cursor: pointer;
+	transform: scale(0.95);
+	opacity:0.95;
+}
+
+.hover-zoom:hover {
+	opacity:1;
+	transform: scale(1);
+}

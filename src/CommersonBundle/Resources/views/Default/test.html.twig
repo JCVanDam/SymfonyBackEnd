@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .list_h1{
+            font-size:1.5em;
+            font-weight: bold;
+            background-color: #F5F7FA;
+        }
+        .list_h1 small{
+            color: #656D78;
+        }
+        .list_h2{
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #F5F7FA;
+        }
+        .list_h2:hover{
+            background-color: #E6E9ED;
+        }
+        .badge_success{
+            background-color: #5cb85c;
+        }
+        .badge_danger{
+            background-color: #d9534f;
+        }
+        .fade{
+            opacity: 0.25;
+        }
+        .container{
+            width:100%;
+        }
+    </style>
+{% endblock %}
+
+{% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block sonata_page_content %}
+
+<title>Gestion des fichiers (dauphin_commerson)</title>
+</head>
+<body>
+<div class="container">
+      <div class="page-header">
+        <h1>Gestion des fichiers <small>(dauphin_commerson)</small></h1>
+      </div>
+</div>
+<div class="container">
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+          <h2>Situation BDD <small>(base de données vers serveur)</small></h2>
+          <br>
+
+          {% set cpt = nbDosSor + nbDosObs + nbDosImg + nbDosFil %}
+          {% if cpt > 0 %}
+              <div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Aïe ! </strong> Certaines données de la base n'ont pas de correspondance avec les fichiers stockés sur le serveur !</div>
+          {% else %}
+              <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Super ! </strong> Toutes les données de la base ont une correspondance avec les fichiers stockés sur le serveur !</div>
+          {% endif %}
+
+          {# Gestion des sorties #}
+          {% if nbSor == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Sorties <small>({{ nbSor }} ligne(s) dans la base)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#listSor">Liste des Sorties qui ne trouvent pas de dossier correspondant :
+                  {% if nbDosSor == 0 %}
+                      <span class="badge badge_success">{{nbDosSor}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{nbDosSor}}</span>
+                  {% endif %}
+              </li>
+              <ul id="listSor" class="list-group collapse">
+                {% for e in listSor %}
+                  <li class="list-group-item">{{ e }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+
+          {# Gestion des observations #}
+          {% if nbObs == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Observations <small>({{ nbSor }} ligne(s) dans la base)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#listObs">Liste des Observations qui ne trouvent pas de dossier correspondant :
+                  {% if nbDosObs == 0 %}
+                      <span class="badge badge_success">{{nbDosObs}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{nbDosObs}}</span>
+                  {% endif %}
+              </li>
+              <ul id="listObs" class="list-group collapse">
+                {% for e in listObs %}
+                  <li class="list-group-item">{{ e }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+
+          {# Gestion des images #}
+          {% if nbImg == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Images <small>({{ nbImg }} ligne(s) dans la base)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#listImg">Liste des Images qui ne trouvent pas de fichier correspondant :
+                  {% if nbDosImg == 0 %}
+                      <span class="badge badge_success">{{nbDosImg}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{nbDosImg}}</span>
+                  {% endif %}
+              </li>
+              <ul id="listImg" class="list-group collapse">
+                {% for e in listImg %}
+                  <li class="list-group-item">{{ e }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+
+          {# Gestion des fichiers #}
+          {% if nbFil == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Files <small>({{ nbFil }} ligne(s) dans la base)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#listFil">Liste des Files qui ne trouvent pas de fichier correspondant :
+                  {% if nbDosFil == 0 %}
+                      <span class="badge badge_success">{{nbDosFil}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{nbDosFil}}</span>
+                  {% endif %}
+              </li>
+              <ul id="listFil" class="list-group collapse">
+                {% for e in listFil %}
+                  <li class="list-group-item">{{ e }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+          <h2>Situation SERVEUR <small>(serveur vers base de données)</small></h2>
+          <br>
+
+          {% set cpt = arrayFileSor|length + arrayFileObs|length + arrayFileImg|length + arrayFileFil|length + arrayFileOthers|length %}
+          {% if cpt > 0 %}
+              <div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Aïe ! </strong> Certains fichiers stockés sur le serveur ne trouvent pas correspondance avec les données de la base !</div>
+          {% else %}
+              <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>Super ! </strong> Tous les fichiers stockés sur le serveur trouvent correspondance avec les données stockées sur la base !</div>
+          {% endif %}
+
+          {# Gestion des sorties #}
+          {% if nbArrayFileSor == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Sorties <small>({{nbArrayFileSor}} dossier(s) sur le serveur)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#arrayFileSor">Dossier(s) non rattaché(s) à la base de données mais perçu(s) comme Sortie :
+                  {% if arrayFileSor|length == 0 %}
+                      <span class="badge badge_success">{{arrayFileSor|length}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{arrayFileSor|length}}</span>
+                  {% endif %}
+              </li>
+              <ul id="arrayFileSor" class="list-group collapse">
+                {% for e in arrayFileSor %}
+                  <li class="list-group-item">{{ e }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+
+          {# Gestion des observations #}
+          {% if nbArrayFileObs == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Observations <small>({{nbArrayFileObs}} dossier(s) sur le serveur)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#arrayFileObs">Dossier(s) non rattaché(s) à la base de données mais perçu(s) comme Observation :
+                  {% if arrayFileObs|length == 0 %}
+                      <span class="badge badge_success">{{arrayFileObs|length}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{arrayFileObs|length}}</span>
+                  {% endif %}
+              </li>
+              <ul id="arrayFileObs" class="list-group collapse">
+                {% for e in arrayFileObs %}
+                  <li class="list-group-item">{{ e }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+
+          {# Gestion des images #}
+          {% if nbArrayFileImg == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Images <small>({{nbArrayFileImg}} fichier(s) sur le serveur)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#arrayFileImg">Fichier(s) non rattaché(s) à la base de données mais perçu(s) comme Image :
+                  {% if arrayFileImg|length == 0 %}
+                      <span class="badge badge_success">{{arrayFileImg|length}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{arrayFileImg|length}}</span>
+                  {% endif %}
+              </li>
+              <ul id="arrayFileImg" class="list-group collapse">
+                {% for e in arrayFileImg %}
+                  <li class="list-group-item">{{ e.getRealPath }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+
+          {# Gestion des fichiers #}
+          {% if nbArrayFileFil == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Files <small>({{nbArrayFileFil}} fichier(s) sur le serveur)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#arrayFileFil">Fichier(s) non rattaché(s) à la base de données mais perçu(s) comme File :
+                  {% if arrayFileFil|length == 0 %}
+                      <span class="badge badge_success">{{arrayFileFil|length}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{arrayFileFil|length}}</span>
+                  {% endif %}
+              </li>
+              <ul id="arrayFileFil" class="list-group collapse">
+                {% for e in arrayFileFil %}
+                  <li class="list-group-item">{{ e.getRealPath }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+
+          {# Gestion des autres #}
+          {% if arrayFileOthers|length == 0 %}
+              <ul class="list-group fade">
+          {% else %}
+              <ul class="list-group">
+          {% endif %}
+              <li class="list-group-item list_h1">Erreurs <small>({{arrayFileOthers|length}} autre(s) fichier(s) sur le serveur)</small></li>
+              <li class="list-group-item list_h2" data-toggle="collapse" data-target="#arrayFileOthers">Fichier(s) et/ou dossier(s) non rattaché(s) à la base de données et qui ne correspondent à aucun type connu :
+                  {% if arrayFileOthers|length == 0 %}
+                      <span class="badge badge_success">{{arrayFileOthers|length}}</span>
+                  {% else %}
+                      <span class="badge badge_danger">{{arrayFileOthers|length}}</span>
+                  {% endif %}
+              </li>
+              <ul id="arrayFileOthers" class="list-group collapse">
+                {% for e in arrayFileOthers %}
+                  <li class="list-group-item">{{ e.getRealPath }}</li>
+                {% endfor %}
+              </ul>
+          </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,18 @@
+parameters:
+    database_host: 178.170.71.105
+    # database_host: 192.168.40.139
+    database_port: 5432
+    database_name: user
+    database_name2: phylica
+    database_name3: frequentation
+    database_name4: hfi
+    database_name5: dauphin_commerson
+    database_name6: ornitho_pinni
+    database_user: sig
+    database_password: sig
+    mailer_transport: smtp
+    mailer_host: piccolo.maxime@gmail.com
+    mailer_user: piccolo.maxime@gmail.com
+    mailer_password: taaf2018
+    secret: acea328e1098de0f7f8f85f0a5698a5772ad8dbc
+    server_ip: 192.168.40.39

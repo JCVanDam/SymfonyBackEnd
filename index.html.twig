@@ -1,0 +1,75 @@
+{% block field %}
+  <td>
+      {% for item in object.getObservations %}
+      <div class="row">
+        {{ item.getId }}
+      </div>
+      <div class="row">
+        {{ item.getNumeroObservation }}
+      </div>
+      <div class="row">
+        {{ item.getNProtocoleAutre }}
+      </div>
+      <div class="row">
+        {{ item.getDateManip }}
+      </div>
+      <div class="row">
+        {{ item.getDateSaisie }}
+      </div>
+      <div class="row">
+        {{ item.getSource }}
+      </div>
+      <!-- <div class="row">
+        getManipUser
+      </div> -->
+      <div class="row">
+        {{ item.getLatitude }}
+      </div>
+      <div class="row">
+        {{ item.getLongitude }}
+      </div>
+      <div class="row">
+        {{ item.getAltitude }}
+      </div>
+      <!-- <div class="row">
+        getNActivite
+      </div> -->
+      <div class="row">
+        {{ item.getNReleveVegetation }}
+      </div>
+      <div class="row">
+        {{ item.getNReleveInvertebre }}
+      </div>
+      <div class="row">
+        {{ item.getLieuPrelevement }}
+      </div>
+      <div class="row">
+        {{ item.getEchantillon }}
+      </div>
+      <div class="row">
+        {{ item.getReferenceEchantillon }}
+      </div>
+      <div class="row">
+        {{ item.getTypeEchantillon }}
+      </div>
+      <div class="row">
+        {{ item.getNombreEchantillon }}
+      </div>
+      <div class="row">
+        {{ item.getPhoto }}
+      </div>
+      <div class="row">
+        {{ item.getReferencePhoto }}
+      </div>
+      <!-- <div class="row">
+        getEradication
+      </div> -->
+      <!-- <div class="row">
+        getDescriptionVegetation
+      </div> -->
+      <!-- <div class="row">
+        getProtocole
+      </div> -->
+      {% endfor %}
+  </td>
+{% endblock %}

@@ -1,0 +1,4 @@
+services:
+    usefull.fonction:
+        class: PortalBundle\Service\UsefullFunction
+        public: true

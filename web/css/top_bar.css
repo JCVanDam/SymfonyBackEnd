@@ -1,0 +1,44 @@
+#header_content{
+  height:70px;
+}
+
+#logo_content{
+  height:70px;
+}
+
+#bar{
+  height:70px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+#img_logo{
+  width:55px;
+  margin-bottom:5px;
+  margin-top:5px;
+  border-radius:3px;
+  position:fixed;
+  left:15px;
+}
+
+#btn_bar{
+  background-color: #222d32;
+  opacity: 0.6;
+  color:white;
+  border: 0px;
+  font-size:20px;
+  border-radius: 3px;
+}
+
+#btn_bar:hover{
+  opacity: 1;
+}
+
+#entity_bar{
+  margin-top:20px;
+}
+
+#username{
+  font-size:20px;
+}

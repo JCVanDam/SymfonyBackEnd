@@ -1,0 +1,17 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 178.170.71.105
+    database_port: 5432
+    database_name: phylica
+    database_user: sig
+    database_password: sig
+    mailer_transport: smtp
+    mailer_host: piccolo.maxime@gmail.com
+    mailer_user: piccolo.maxime@gmail.com
+    mailer_password: taaf2018
+    secret: acea328e1098de0f7f8f85f0a5698a5772ad8dbc
+    # My ip on local network
+    # server_ip: 192.168.40.39:8888
+
+    # Amsterdam server
+    server_ip: 192.168.5.19

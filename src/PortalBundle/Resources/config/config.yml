@@ -1,0 +1,4 @@
+twig:
+    form_themes:
+        - 'PortalBundle:Form:cartotype_fields.html.twig'
+        - 'PortalBundle:Form:sitetype_fields.html.twig'

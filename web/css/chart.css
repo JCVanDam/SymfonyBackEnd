@@ -1,0 +1,64 @@
+h1 {
+  font-size: large;
+  cursor: pointer;
+  /* border-bottom: 1px solid #4270a7; */
+  width: 60vw;
+}
+
+i {
+  margin-right: 15px;
+  margin-top: 7px;
+}
+
+.container{
+  width: 100%;
+}
+
+.content-wrapper{
+  padding-top: 70px !important;
+}
+
+.collapse-title {
+  color: #4270a7;
+  display: flex;
+  align-items: center;
+  font-size: x-large;
+}
+
+.chart-container {
+  border: .5px solid #fff;
+  border-radius: 5px;
+  margin-right: 100px;
+  background-color: rgb(242, 239, 227, .5);
+}
+
+/* .small {
+  width: 600px;
+} */
+
+.chart-item {
+  background-color: #fff;
+  margin: 15px;
+  padding-bottom: 15px;
+  border-radius: 5px;
+}
+
+.static-table {
+  margin: 15px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.eradication-table {
+  margin-top: 15px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+#volume-per-year {
+  width: 300px;
+}
+
+#general-data {
+  width: 200px;
+}

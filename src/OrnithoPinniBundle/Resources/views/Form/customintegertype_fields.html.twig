@@ -1,0 +1,60 @@
+{% block custominteger_widget %}
+  <style>
+    .{{id}}-row button{
+      width:100%;
+      border-radius: 0px;
+      background-color: #f8f9fa;
+      border: solid #f8f9fa 1px;
+    }
+
+    .{{id}}-row button:hover{
+      background-color: #e2e6ea;
+      border: solid #dae0e5 1px;
+    }
+
+    .{{id}}-row{
+      width:100%;
+      height:auto;
+      display:flex;
+      padding: 0px;
+      margin: 0px;
+      margin-top : -30px;
+      text-align: center;
+    }
+
+    .col{
+      width:20%;
+      height:20px;
+      padding: 0px;
+      margin: 0px;
+      display: block;
+    }
+  </style>
+    <div class="{{id}}-row">
+      <div class="col">
+        <button type="button" onclick="{{data.fieldname}}_change_value(this, 0);" class="btn"><strong>0{{data.unite}}</strong></button>
+      </div>
+      <div class="col">
+        <button type="button" onclick="{{data.fieldname}}_change_value(this, 1);" class="btn"><strong>1{{data.unite}}</strong></button>
+      </div>
+      <div class="col">
+        <button type="button" onclick="{{data.fieldname}}_change_value(this, 2);" class="btn"><strong>2{{data.unite}}</strong></button>
+      </div>
+      <div class="col">
+        <button type="button" onclick="{{data.fieldname}}_change_value(this, 3);" class="btn"><strong>3{{data.unite}}</strong></button>
+      </div>
+      <div class="col">
+        <button type="button" onclick="{{data.fieldname}}_change_value(this, 4);" class="btn"><strong>4{{data.unite}}</strong></button>
+      </div>
+    </div>
+  <script>
+    function {{data.fieldname}}_change_value(elt, nb){
+        var parent = elt.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+        $(parent).find("input").each(function(){
+            if(this.id.includes("_{{data.fieldname}}")){
+                $(this).val(nb);
+            }
+        });
+    }
+  </script>
+{% endblock %}

@@ -1,0 +1,13 @@
+#btn-logout{
+    background-color: white;
+    color:black;
+    border: 0px;
+    width:100px;
+    font-size:20px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+* {
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+}

@@ -1,0 +1,34 @@
+{% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/map.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/ol.css') }}" type="text/css">
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/libs/polyfill/polyfill.js') }}"></script>
+  <script src="{{ asset('js/libs/openlayers/4.6.5/ol.js') }}"></script>
+{% endblock %}
+
+{% block navbar_title %}
+    Afficher un Phylica
+{% endblock %}
+
+{% block show_groups %}
+  {% block field_row %}
+    {{ parent() }}
+    <div class="box box-success box-show-field">
+      <div class="box-header">
+        <h4 class="box-title">
+          Carte
+        </h4>
+        <div id="map" class="map map-show">
+        </div>
+      </div>
+    </div>
+    <div style="display: none;" id="serverIp" value="{{ server_ip }}">{{ server_ip }}</div>
+    <script src="{{ asset('js/mapShow.js') }}"></script>
+  {% endblock %}
+{% endblock %}

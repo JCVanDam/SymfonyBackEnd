@@ -1,0 +1,257 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+<table class="table table-striped table-bordered my-table">
+    <thead>
+        <tr>
+            <th>{{ 'action_delete'|trans({}, 'SonataAdminBundle') }}</th>
+            <th>N°</th>
+            <th colspan="2" ></th>
+        </tr>
+    </thead>
+    <tbody class="sonata-ba-tbody">
+        {% set nb = 0 %}
+        {% set last = form.children|last %}
+        {% for nested_group_field_name, nested_group_field in form.children %}
+            <tr class="my-tr">
+                {# Affichage du DELETE #}
+                {% for field_name, nested_field in nested_group_field.children %}
+                    {% if field_name == '_delete' %}
+                        <td style="width:30px;" class="
+                            sonata-ba-td-{{ id }}-{{ field_name  }}
+                            control-group
+                            {% if nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}
+                            "
+                            {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
+                                style="display:none;"
+                            {% endif %}
+                        >
+                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                {{ form_widget(nested_field) }}
+
+                                {% set dummy = nested_group_field.setrendered %}
+                            {% else %}
+                                {% if field_name == '_delete' %}
+                                    {{ form_widget(nested_field, { label: false }) }}
+                                {% else %}
+                                    {{ form_widget(nested_field) }}
+                                {% endif %}
+                            {% endif %}
+                            {% if nested_field.vars.errors|length > 0 %}
+                                <div class="help-inline sonata-ba-field-error-messages">
+                                    {{ form_errors(nested_field) }}
+                                </div>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+
+                {% endfor %}
+                {# Affichage du reste #}
+                <td width="30px" class="my-container">
+                  <span class="my-vertical-center" aria-hidden="true"><strong>{{sonata_admin.name|slice(0, 1)|upper}}{{nb + 1}}</strong></span>
+                </td>
+                {% if nested_group_field == last %}
+                    <td title="Erreurs : 0" onclick="change(this);" style="width:30px;" data-toggle="collapse" data-target="#table-collapse-{{nb}}-{{id}}" aria-label="glyphicon glyphicon-menu-down" class="my-container my-btn">
+                        <span class="span-glyph my-vertical-center glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                    </td>
+                    <td>
+                      <div class="collapse in" id="table-collapse-{{nb}}-{{id}}">
+                {% else %}
+                    <td title="Erreurs : 0" onclick="change(this);" style="width:30px;" data-toggle="collapse" data-target="#table-collapse-{{nb}}-{{id}}" aria-label="glyphicon glyphicon-menu-down" class="my-container my-btn">
+                        <span class="span-glyph my-vertical-center glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                    </td>
+                    <td>
+                      <div class="collapse" id="table-collapse-{{nb}}-{{id}}">
+                {% endif %}
+                  <table style="width:100%;">
+                    <tr><td><h4><strong>{{sonata_admin.name[0:sonata_admin.name|length-1]|upper}} N°{{nb + 1}}</strong></h4></td></tr>
+                    {% for field_name, nested_field in nested_group_field.children %}
+                        {% if field_name != '_delete' %}
+                            {# permet de bien gérer le Choice Field Mask Type#}
+                            <tr id="sonata-ba-field-container-{{id}}_{{nb}}-{{field_name}}">
+                              <td class="
+                                  sonata-ba-td-{{ id }}-{{ field_name  }}
+                                  control-group
+                                  {% if nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}
+                                  "
+                                  {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
+                                      style="display:none;"
+                                  {% endif %}>
+                                <div id="sonata-ba-field-container-{{id}}" class="form-group
+                                {% if nested_field.vars.errors|length > 0 %}
+                                    has-error
+                                {% endif %}
+                                ">
+                                    <label class="control-label" for="{{id}}">{{ nested_field.vars.label|trans({}, nested_field.vars['sonata_admin'].admin.translationDomain|default(nested_field.vars.translation_domain)) }}</label>
+                                    <div class="sonata-ba-field sonata-ba-field-standard-natural
+                                    {% if nested_field.vars.errors|length > 0 %}
+                                        sonata-ba-field-error
+                                    {% endif %}
+                                    ">
+                                        {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                            {{ form_widget(nested_field) }}
+
+                                            {% set dummy = nested_group_field.setrendered %}
+                                        {% else %}
+                                            {% if field_name == '_delete' %}
+                                                {{ form_widget(nested_field, { label: false }) }}
+                                            {% else %}
+                                                {{ form_widget(nested_field) }}
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if nested_field.vars.errors|length > 0 %}
+                                            <div style="color:#dd4b39;" class="help-inline sonata-ba-field-error-messages">
+                                              <ul class="list-unstyled">
+                                                  <li><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{nested_field.vars.errors[0].message}}</li>
+                                              </ul>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                          </tr>
+                        {% endif %}
+                    {% endfor %}
+                  </table>
+                </div>
+              </td>
+            </tr>
+            {% set nb = nb + 1 %}
+        {% endfor %}
+    </tbody>
+</table>
+
+<style>
+
+table table .table-striped > tbody > tr:nth-child(2n+1){
+    background-color: rgba(0, 141, 76, 0.1);
+}
+
+table table .table-striped > tbody > tr .my-btn:hover{
+    background-color: rgba(0, 141, 76, 0.2);
+}
+
+table table table table .table-striped > tbody > tr:nth-child(2n+1){
+   background-color: rgba(13, 145, 242, 0.2);
+}
+
+table table table table .table-striped > tbody > tr .my-btn:hover{
+   background-color: rgba(13, 145, 242, 0.3);
+}
+
+table table table table table table .table-striped > tbody > tr:nth-child(2n+1){
+   background-color: rgba(255, 102, 153, 0.3);
+}
+
+table table table table table table .table-striped > tbody > tr .my-btn:hover{
+   background-color: rgba(255, 102, 153, 0.4);
+}
+
+.has-error .select2-choice{
+    border-color: #dd4b39;
+}
+
+.my-collapse-button:hover{
+    background-color: #F5F7FA;
+}
+
+.my-collapse-button{
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.glyphicon-menu-down{
+    transition: transform .3s ease-in;
+}
+.glyphicon-menu-down.rotate-90{
+    transform:rotate(90deg);
+}
+
+.my-btn{
+    cursor:pointer;
+}
+
+.my-btn:hover{
+    background-color: #E6E9ED;
+}
+
+.my-btn:focus, .my-btn:active{
+    background-color: #ced4da;
+}
+
+.my-btn-error{
+    color: rgb(221, 75, 57);
+    border: none;
+}
+
+.my-btn-error:hover, .my-btn-error:focus, .my-btn-error:active{
+    color: black;
+    border-color: rgb(221, 75, 57);
+    background-color: rgba(221, 75, 57, 0.2);
+    border: none;
+}
+
+.my-container {
+  position: relative;
+  border: none;
+}
+
+.my-vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.my-table{
+  border-collapse: separate;
+}
+
+/*Localisation div qui entoure*/
+.my-tr:nth-of-type(2n) .parent-border{
+  background-color: #f9f9f9;
+}
+
+.my-tr:nth-of-type(2n+1) .parent-border{
+  background-color: white;
+}
+</style>
+
+<script>
+    function change(obj){
+        $(obj).find('span').toggleClass('glyphicon-menu-down').toggleClass('glyphicon-menu-right');
+    }
+
+    //add my-btn-error si has-error
+    $(document).ready(function() {
+      $(".my-tr").each(function(){
+          var cpt = 0;
+          $(this).find("div").each(function(){
+              $(this).find("ul").each(function(){
+                  var lis = this.getElementsByTagName("li");
+                  for(var i=0; li=lis[i]; i++) {
+                      if(i!=0){
+                          li.parentNode.removeChild(li);
+                      }
+                  }
+              });
+              if($(this).hasClass("sonata-ba-field-error-messages")){
+                  $(this).css('color', '#dd4b39');
+                  cpt++;
+              }
+          });
+          if(cpt>0){
+              $(this).find(".my-container:eq(1)").addClass("my-btn-error");
+              $(this).find(".my-container:eq(1)").prop('title', 'Erreurs : '+cpt);
+          }
+      });
+    });
+</script>

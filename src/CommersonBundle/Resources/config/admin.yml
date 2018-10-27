@@ -1,0 +1,37 @@
+services:
+    commerson_static_list:
+            class: CommersonBundle\Services\StaticList
+            public: true
+
+    sonata.admin.my.user:
+            class: CommersonBundle\Admin\MyUserAdmin
+            arguments: [~, CommersonBundle\Entity\MyUser, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Dauphin de Commerson", label: "Utilisateur", show_in_dashboard: true }
+    sonata.admin.sortie:
+            class: CommersonBundle\Admin\SortieAdmin
+            arguments: [~, CommersonBundle\Entity\Sortie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Dauphin de Commerson", label: "Sortie", show_in_dashboard: true }
+            calls:
+                - [setTemplate, [edit, CommersonBundle:Admin:my_create.html.twig]]
+    sonata.admin.observation:
+            class: CommersonBundle\Admin\ObservationAdmin
+            arguments: [~, CommersonBundle\Entity\Observation, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Dauphin de Commerson", label: "Observation", show_in_dashboard: true }
+    sonata.admin.biopsie:
+            class: CommersonBundle\Admin\BiopsieAdmin
+            arguments: [~, CommersonBundle\Entity\Biopsie, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Dauphin de Commerson", label: "Biopsie", show_in_dashboard: true }
+    sonata.admin.localisation:
+            class: CommersonBundle\Admin\LocalisationAdmin
+            arguments: [~, CommersonBundle\Entity\Localisation, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Dauphin de Commerson", label: "Localisation", show_in_dashboard: true }
+    sonata.admin.image:
+            class: CommersonBundle\Admin\ImageAdmin
+            arguments: [~, CommersonBundle\Entity\Image, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: "Dauphin de Commerson", label: "Image" }

@@ -1,0 +1,529 @@
+{% block carto_widget %}
+    {% block stylesheets %}
+      <link rel="stylesheet" href="{{ asset('css/ol.css') }}" type="text/css">
+      <style>
+        #taaf-hide-label {
+          position: absolute;
+          bottom: 65px;
+          z-index: 1;
+          border: rgba(255,255,255,0.75) solid 4px;
+        }
+
+        #taaf-select-manually {
+          position: absolute;
+          z-index: 1;
+          bottom: 20px;
+          border: rgba(255,255,255,0.75) solid 4px;
+        }
+
+        .refresh{
+          position: absolute;
+          z-index: 0;
+        }
+
+        .parent-border{
+            border: solid #ededed 1px;
+            padding: 1%;
+            background-color: #f9f9f9;
+        }
+
+      </style>
+    {% endblock %}
+
+    {% block javascripts %}
+      <script src="{{ asset('js/libs/polyfill/polyfill.js') }}"></script>
+      <script src="{{ asset('js/libs/openlayers/4.6.5/ol.js') }}"></script>
+    {% endblock %}
+
+    {% if data.astuce is defined %}
+        {% set param_astuce = data.astuce %}
+    {% else %}
+        {% set param_astuce = "Vous pouvez glisser un fichier GPX directement sur la carte!" %}
+    {% endif %}
+
+    {% if data.info is defined %}
+        {% set param_info = data.info %}
+    {% else %}
+        {% set param_info = "Vous pouvez également saisir à la main toutes les données!" %}
+    {% endif %}
+
+    {% if data.districts is defined %}
+        {% set param_districts = data.districts %}
+    {% else %}
+        {% set param_districts = ['Kerguelen', 'Amsterdam', 'Crozet', 'Possession', 'Saint-Paul'] %}
+    {% endif %}
+    <!-- Trigger the modal with a button -->
+    <center>
+      <button style="width:40%" type="button" class="btn btn-default" data-toggle="modal" data-target="#{{id}}_modal">
+        <span style="color:#00a65a;" class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+      </button>
+    </center>
+
+    <!-- Modal -->
+    <div id="{{id}}_modal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><strong>Outil de saisie pour données géographiques</strong></h4>
+          </div>
+          <div class="modal-body">
+            <div id="{{id}}_my_collapse_carte" class="container collapse in" style="width:100%;">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="{{id}}_districts">District :</label>
+                    <select id="{{id}}_districts">
+                    {% for district in param_districts %}
+                        <option value="{{district}}">{{district}}</option>
+                    {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="{{id}}_units">Unité de la carte :</label>
+                    <select id="{{id}}_units">
+                      <option value="metric" selected>Metric</option>
+                      <option value="degrees">Degrees</option>
+                      <option value="nautical">Nautical Mile</option>
+                      <option value="imperial">Imperial Inch</option>
+                      <option value="us">US Inch</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div id="{{id}}_map" class="map"></div>
+                  <div id="{{id}}_info">&nbsp;</div>
+                </div>
+                <div class="col-12">
+                  <div id="{{id}}_informations-map">
+                    <div class="alert alert-success alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                      <strong>Astuce!</strong> {{param_astuce}}
+                    </div>
+                    <div class="alert alert-info alert-dismissible">
+                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                      <strong>Info!</strong> {{param_info}}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="{{id}}_drawPoints">Édition de nouveaux points :</label>
+                    <select id="{{id}}_drawPoints">
+                        <option value="Non">Non</option>
+                        <option value="Oui">Oui</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="{{id}}_valid" class="btn btn-default" data-dismiss="modal">Valider</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  <script>
+    function {{id}}initMap(){
+      if(document.getElementById("{{id}}_map").children.length<1){
+        //Si l'initialisation de la map n'a pas encore été faite...
+
+        //Réception des paramètres transmis par le CartoType (data pour OpenLayers)
+        var param_date = "";
+        {% if data.date is defined %}
+            var param_date = {{ data.date|json_encode|raw }};
+        {% endif %}
+
+        var param_heure = "";
+        {% if data.heure is defined %}
+            var param_heure = {{ data.heure|json_encode|raw }};
+        {% endif %}
+
+        var param_latitude = "";
+        {% if data.latitude is defined %}
+            var param_latitude = {{ data.latitude|json_encode|raw }};
+        {% endif %}
+
+        var param_longitude = "";
+        {% if data.longitude is defined %}
+            var param_longitude = {{ data.longitude|json_encode|raw }};
+        {% endif %}
+
+        var param_altitude = "";
+        {% if data.altitude is defined %}
+            var param_altitude = {{ data.altitude|json_encode|raw }};
+        {% endif %}
+
+        var param_nom = "";
+        {% if data.nom is defined %}
+            var param_nom = {{ data.nom|json_encode|raw }};
+        {% endif %}
+
+        var param_districts = ['Kerguelen', 'Amsterdam', 'Possession', 'Crozet', 'Saint-Paul'];
+        {% if data.districts is defined %}
+            var param_districts = {{ data.districts|json_encode|raw }};
+        {% endif %}
+
+        //Récupération de la latitude et de la longitude dans le formulaire, si les valeurs sont présentes
+        var latitude = "";
+        var longitude = "";
+        var daddy = document.getElementById({{ id|json_encode|raw }}+"_my_collapse_carte").parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+        $(daddy).find("input").each(function(){
+            if(this.id.includes(param_latitude)){
+                latitude = this.value;
+            }
+            if(this.id.includes(param_longitude)){
+                longitude = this.value;
+            }
+        });
+
+          //Déclaration des variables (OpenLayers)
+          var selectSingleClick = new ol.interaction.Select({
+            style: new ol.style.Style({
+             image: new ol.style.Circle({
+               radius: 5,
+               fill: new ol.style.Fill({
+                 color: 'rgba(207, 15, 15, .75)'
+               }),
+               stroke: new ol.style.Stroke({
+                 color: 'rgba(255,255,255, 1)',
+                 width: 1
+               })
+             })
+            })
+          });
+          var defaultStyle = {
+           'Point': new ol.style.Style({
+             image: new ol.style.Circle({
+               fill: new ol.style.Fill({
+                 color: 'rgba(6, 163, 28, .75)'
+               }),
+               radius: 5,
+               stroke: new ol.style.Stroke({
+                 color: 'rgba(255,255,255, 1)',
+                 width: 1
+               })
+             })
+           })
+          };
+
+          //Lien entre fonctions et events
+          document.getElementById({{ id|json_encode|raw }} + "_" + 'districts').onchange = options_district;
+          document.getElementById({{ id|json_encode|raw }} + "_" + 'drawPoints').onchange = options_draw_points;
+          document.getElementById('{{id}}_valid').onclick = options_valid;
+          document.getElementById('{{id}}_units').onchange = options_metrics;
+
+        //Déclaration des réglages (OpenLayers)
+        var dragAndDropInteraction = new ol.interaction.DragAndDrop({
+          formatConstructors: [
+            ol.format.GPX,
+            ol.format.GeoJSON,
+            ol.format.IGC,
+            ol.format.KML,
+            ol.format.TopoJSON
+          ]
+        });
+
+        var raster = new ol.layer.Tile({
+          source: new ol.source.OSM()
+        });
+
+        var source = new ol.source.Vector({wrapX: false});
+        var vector = new ol.layer.Vector({
+          source: source
+        });
+
+        var scaleLineControl = new ol.control.ScaleLine();
+
+        //Création de la map par défaut
+        var map = new ol.Map({
+          controls: ol.control.defaults({
+            attributionOptions: {
+              collapsible: false
+            }
+          }).extend([
+            scaleLineControl
+          ]),
+          interactions: ol.interaction.defaults({mouseWheelZoom:false}).extend([dragAndDropInteraction]),
+          layers: [raster, vector],
+          target: {{ id|json_encode|raw }} + "_map",
+          view: new ol.View({
+            center: ol.proj.transform([77.5578658823407, -37.836996810851645], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 11
+          })
+        });
+
+        //Centrage de la map
+        if(latitude!="" && longitude!=""){
+            //EDIT (ou rafraichissement de la carte)
+            //Si les latitudes et longitudes récupérées dans le formulaire ne sont pas nulles, on centre la carte et on ajoute un point de repère
+            var iconFeature = new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.transform([parseFloat(longitude), parseFloat(latitude)], 'EPSG:4326', 'EPSG:3857'))
+            });
+            var iconStyle = new ol.style.Style({
+              image: new ol.style.Circle({
+                fill: new ol.style.Fill({
+                  color: 'rgba(145, 13, 186, .75)'
+                }),
+                radius: 5,
+                stroke: new ol.style.Stroke({
+                  color: 'rgba(255,255,255, 1)',
+                  width: 1
+                })
+              })
+            });
+            iconFeature.setStyle(iconStyle);
+
+            var myVectorSource = new ol.source.Vector({
+              features: [iconFeature]
+            });
+            map.addLayer(new ol.layer.Vector({
+              source: myVectorSource
+            }));
+            var myVectorLayer = new ol.layer.Vector({
+                source: myVectorSource
+            });
+            map.addLayer(myVectorLayer);
+
+            map.getView().setCenter(ol.proj.transform([parseFloat(longitude),parseFloat(latitude)], 'EPSG:4326', 'EPSG:3857'));
+            map.getView().setZoom(16);
+        }else{
+            //Sinon, centrage par défaut en fonction du district selectionné
+            options_district();
+        }
+
+        //Fonction qui charge le style par défaut
+        var styleFunction = function(feature, resolution) {
+          var featureStyleFunction = feature.getStyleFunction();
+          if (featureStyleFunction) {
+            return featureStyleFunction.call(feature, resolution);
+          } else {
+            return defaultStyle[feature.getGeometry().getType()];
+          }
+        };
+
+        //Fonction de drag and drop (OpenLayers)
+        dragAndDropInteraction.on('addfeatures', function(event) {
+          var vectorSource = new ol.source.Vector({
+            features: event.features
+          });
+          map.addLayer(new ol.layer.Vector({
+            source: vectorSource,
+            style: styleFunction
+          }));
+          map.getView().fit(vectorSource.getExtent());
+        });
+
+        //Gestion du click sur point GPS (OpenLayers)
+        map.on('pointermove', function(evt) {
+          if (evt.dragging) {
+            return;
+          }
+          var pixel = map.getEventPixel(evt.originalEvent);
+          displayFeatureInfo(pixel);
+        });
+
+        //Affichage des waypoints
+        var displayFeatureInfo = function(pixel) {
+          var features = [];
+          map.forEachFeatureAtPixel(pixel, function(feature) {
+            features.push(feature);
+          });
+          if (features.length > 0) {
+            var info = [];
+            var i, ii;
+            for (i = 0, ii = features.length; i < ii; ++i) {
+              info.push(features[i].get('name'));
+            }
+            document.getElementById('{{id}}_info').innerHTML = info.join(', ') || '&nbsp';
+          } else {
+            document.getElementById('{{id}}_info').innerHTML = '&nbsp;';
+          }
+        };
+
+        //Stockage des informations de points au click (sur point instancié via dragAndDrop ou création)
+        var selectItem = null;
+        map.on('click', function(evt) {
+          map.addInteraction(selectSingleClick);
+           selectSingleClick.on('select', function(e) {
+             selectItem = e.selected[0];
+           });
+        });
+
+        //Ecriture dans le champs concerné (input)
+        function editElementInput(id, value){
+            var parent = document.getElementById({{ id|json_encode|raw }}+"_my_collapse_carte").parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+            $(parent).find("input").each(function(index){
+                if(this.id.includes(id)){
+                    this.value = value;
+                }
+            });
+        }
+
+        //Ecriture dans le champs concerné (heure)
+        function editTime(id, hour, min){
+          var parent = document.getElementById({{ id|json_encode|raw }}+"_my_collapse_carte").parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+          $(parent).find("select").each(function(index){
+                if(this.id.includes(id+"_hour")){
+                    $(this)[0].selectedIndex = getIndexOption(this, hour);
+                    $(this).change();
+                }
+                if(this.id.includes(id+"_minute")){
+                    $(this)[0].selectedIndex = getIndexOption(this, min);
+                    $(this).change();
+                }
+            });
+        }
+
+        //Ecriture dans le champs concerné (date)
+        function editDate(id, day, month, year){
+          var parent = document.getElementById({{ id|json_encode|raw }}+"_my_collapse_carte").parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+          $(parent).find("select").each(function(index){
+                if(this.id.includes(id+"_day")){
+                    $(this)[0].selectedIndex = getIndexOption(this, day);
+                    $(this).change();
+                }
+                if(this.id.includes(id+"_month")){
+                    $(this)[0].selectedIndex = getIndexOption(this, month);
+                    $(this).change();
+                }
+                if(this.id.includes(id+"_year")){
+                    $(this)[0].selectedIndex = getIndexOption(this, year);
+                    $(this).change();
+                }
+            });
+        }
+
+        //Récupération de l'index en fonction d'un key pour la mise à jour des selects (heure et date)
+        function getIndexOption(elt, value){
+          if(value==null){
+              return -1;
+          }
+          var options= elt.options;
+          var i;
+          for (i = 0 ; i < options.length ; i++) {
+              if (options[i].value==value){
+                  return i;
+              }
+          }
+          return -1;
+        }
+
+        //Gestion des réglages de droite (OpenLayers)
+        function options_district(){
+          switch (document.getElementById({{ id|json_encode|raw }} + "_" + 'districts').value) {
+            case 'Kerguelen':
+              map.getView().setCenter(ol.proj.transform([69.40429420152225, -49.346657058295264], 'EPSG:4326', 'EPSG:3857'));
+              map.getView().setZoom(7.5);
+              break;
+            case 'Possession':
+              map.getView().setCenter(ol.proj.transform([51.764499,-46.412480], 'EPSG:4326', 'EPSG:3857'));
+              map.getView().setZoom(11);
+              break;
+            case 'Crozet':
+              map.getView().setCenter(ol.proj.transform([51.05254935475395, -46.29767281278939], 'EPSG:4326', 'EPSG:3857'));
+              map.getView().setZoom(8);
+              break;
+            case 'Amsterdam':
+              map.getView().setCenter(ol.proj.transform([77.5578658823407, -37.836996810851645], 'EPSG:4326', 'EPSG:3857'));
+              map.getView().setZoom(12);
+              break;
+            case 'Saint-Paul':
+              map.getView().setCenter(ol.proj.transform([77.519015, -38.720140], 'EPSG:4326', 'EPSG:3857'));
+              map.getView().setZoom(13);
+              break;
+            default:
+              alert("Vous essayez d'accéder à une carte non chargée sur votre serveur !");
+          }
+        }
+
+        //Ajout de points ? Oui ou non ?
+        function options_draw_points() {
+          switch (document.getElementById({{ id|json_encode|raw }} + "_" + 'drawPoints').value) {
+            case 'Oui':
+              draw = new ol.interaction.Draw({
+                source: source,
+                type: "Point"
+              });
+              map.addInteraction(draw);
+              break;
+            case 'Non':
+              map.removeInteraction(draw);
+              draw = null;
+              break;
+            default:
+              alert("Une erreur est intervenue lors du choix de création de points !");
+          }
+        }
+
+        //Choix de la métrique pour l'échelle
+        function options_metrics() {
+            scaleLineControl.setUnits(document.getElementById('{{id}}_units').value);
+        }
+        options_metrics();
+
+        //Mise à jour des champs du formulaire lors de la validation du modal bootstrap (click sur bouton "Valider")
+        function options_valid(){
+          if(selectItem!=null){
+            if(param_longitude!=""){
+               editElementInput(param_longitude, selectItem.getGeometry().clone().transform('EPSG:3857','EPSG:4326').A[0]);
+            }
+            if(param_latitude!=""){
+               editElementInput(param_latitude, selectItem.getGeometry().clone().transform('EPSG:3857','EPSG:4326').A[1]);
+            }
+
+            if(param_altitude!=""){
+                if(selectItem.getGeometry().clone().transform('EPSG:3857','EPSG:4326').A[2]!=null){
+                   editElementInput(param_altitude, Math.round(selectItem.getGeometry().clone().transform('EPSG:3857','EPSG:4326').A[2]));
+                }else{
+                   editElementInput(param_altitude, null);
+                }
+            }
+
+            if(param_nom!=""){
+                if(selectItem.get('name')!=null){
+                   editElementInput(param_nom, selectItem.get('name'));
+                }else{
+                   editElementInput(param_nom, null);
+                }
+            }
+
+            if(selectItem.getGeometry().clone().getCoordinates()[3]!=null){
+               var d = new Date();
+               d.setTime(selectItem.getGeometry().clone().getCoordinates()[3]*1000);
+               if(param_heure!=""){
+                 editTime(param_heure, d.getHours(), d.getMinutes());
+               }
+               if(param_date!=""){
+                 editDate(param_date, d.getDate(), d.getMonth(), d.getFullYear());
+               }
+            }else{
+                editTime(param_heure, null, null);
+                editDate(param_date, null, null, null);
+            }
+          }
+        }
+      }
+    }
+
+    $(document).ready(function(){
+      //Ajout d'une bordure autour de la div qui imbrique le CartoType
+      var my_parent = document.getElementById({{ id|json_encode|raw }}+"_my_collapse_carte").parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+      $(my_parent).addClass("parent-border");
+
+      //Lancement de la fonction à l'ouverture du modal bootstrap
+      $('#{{id}}_modal').on('shown.bs.modal', function (){
+          {{id}}initMap();
+       })
+    });
+
+
+
+    //Design du collapse : > ou V
+    function my_change(obj){
+        $(obj).find('span').toggleClass('glyphicon-menu-down').toggleClass('glyphicon-menu-up');
+    }
+  </script>
+{% endblock %}

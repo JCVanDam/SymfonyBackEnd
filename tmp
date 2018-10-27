@@ -1,0 +1,49 @@
+{% if item.2012/2013 == "Absence" %}
+  <td style="background-color: green;">{{item.2012/2013}}</td>
+{% elseif item.2012/2013 == "Présence" %}
+  <td style="background-color: red;">{{item.2012/2013}}</td>
+{% else %}
+  <td style="background-color: gray;">{{item.2012/2013}}</td>
+{% endif %}
+{% if item.2013/2014 == "Absence" %}
+  <td style="background-color: green;">{{item.2013/2014}}</td>
+{% elseif item.2013/2014 == "Présence" %}
+  <td style="background-color: red;">{{item.2013/2014}}</td>
+{% else %}
+  <td style="background-color: gray;">{{item.2013/2014}}</td>
+{% endif %}
+{% if item.2014/2015 == "Absence" %}
+  <td style="background-color: green;">{{item.2014/2015}}</td>
+{% elseif item.2014/2015 == "Présence" %}
+  <td style="background-color: red;">{{item.2014/2015}}</td>
+{% else %}
+  <td style="background-color: gray;">{{item.2014/2015}}</td>
+{% endif %}
+{% if item.2015/2016 == "Absence" %}
+  <td style="background-color: green;">{{item.2015/2016}}</td>
+{% elseif item.2015/2016 == "Présence" %}
+  <td style="background-color: red;">{{item.2015/2016}}</td>
+{% else %}
+  <td style="background-color: gray;">{{item.2015/2016}}</td>
+{% endif %}
+{% if item.2016/2017 == "Absence" %}
+  <td style="background-color: green;">{{item.2016/2017}}</td>
+{% elseif item.2016/2017 == "Présence" %}
+  <td style="background-color: red;">{{item.2016/2017}}</td>
+{% else %}
+  <td style="background-color: gray;">{{item.2016/2017}}</td>
+{% endif %}
+{% if item.2017/2018 == "Absence" %}
+  <td style="background-color: green;">{{item.2017/2018}}</td>
+{% elseif item.2017/2018 == "Présence" %}
+  <td style="background-color: red;">{{item.2017/2018}}</td>
+{% else %}
+  <td style="background-color: gray;">{{item.2017/2018}}</td>
+{% endif %}
+{% if item.2018/2019 == "Absence" %}
+  <td style="background-color: green;">{{item.2018/2019}}</td>
+{% elseif item.2018/2019 == "Présence" %}
+  <td style="background-color: red;">{{item.2018/2019}}</td>
+{% else %}
+  <td style="background-color: gray;">{{item.2018/2019}}</td>
+{% endif %}

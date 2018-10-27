@@ -1,0 +1,229 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/chart.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/ol.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/loader.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/top_bar.css') }}" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/libs/chart/2.4.0/Chart.min.js') }}"></script>
+  <script src="{{ asset('js/libs/popper/1.14.3/umd/popper.min.js') }}"></script>
+  <script src="{{ asset('js/libs/bootstrap/4.1.1/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/libs/openlayers/4.6.5/ol.js') }}"></script>
+  <script src="{{ asset('js/libs/datepicker/0.6.5/datepicker.js') }}"></script>
+{% endblock %}
+
+{% block sonata_header %}
+    <header id="header_content" class="main-header">
+        {% block sonata_header_noscript_warning %}
+            <noscript>
+                <div class="noscript-warning">
+                    {{ 'noscript_warning'|trans({}, 'SonataAdminBundle') }}
+                </div>
+            </noscript>
+        {% endblock %}
+        {% block logo %}
+            {% spaceless %}
+                <a id="logo_content" class="logo" href="/admin/application">
+                    {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                        <img id="img_logo" src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
+                    {% endif %}
+                </a>
+            {% endspaceless %}
+        {% endblock %}
+        {% block sonata_nav %}
+            <nav id="bar" class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" >
+                    <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
+                </a>
+
+                <div class="navbar-left">
+                    {% block sonata_breadcrumb %}
+                        <div class="hidden-xs">
+                            {% if _breadcrumb is not empty or action is defined %}
+                                <ol class="nav navbar-top-links breadcrumb">
+                                    {% if _breadcrumb is empty %}
+                                        {% if action is defined %}
+                                            {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
+                                                {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
+                                                {%- set label = menu.label -%}
+                                                {%- if translation_domain is not same as(false) -%}
+                                                    {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
+                                                {%- endif -%}
+
+                                                {% if not loop.last %}
+                                                    <li>
+                                                        {% if menu.uri is not empty %}
+                                                            <a href="{{ menu.uri }}">
+                                                                {% if menu.extra('safe_label', true) %}
+                                                                    {{- label|raw -}}
+                                                                {% else %}
+                                                                    {{- label -}}
+                                                                {% endif %}
+                                                            </a>
+                                                        {% else %}
+                                                            <span>{{ label }}</span>
+                                                        {% endif %}
+                                                    </li>
+                                                {% else %}
+                                                    <li class="active"><span>{{ label }}</span></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ _breadcrumb|raw }}
+                                    {% endif %}
+                                </ol>
+                            {% endif %}
+                        </div>
+                    {% endblock sonata_breadcrumb %}
+                </div>
+
+                {% block sonata_top_nav_menu %}
+                    <div id="username">
+                      {{ app.user }}
+                    </div>
+                    <div class="navbar-custom-menu">
+                      <a id="btn_bar" class="btn btn-primary"
+                        href="/admin/dashboard?service={{app.session.get('service') }}"
+                        >Menu principal</a>
+                    </div>
+                    <div class="navbar-custom-menu">
+                      <a id="btn_bar" class="btn btn-primary"
+                        href="{{ url('sonata_user_admin_security_logout') }}">{{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}</a>
+                    </div>
+                {% endblock %}
+            </nav>
+        {% endblock sonata_nav %}
+    </header>
+{% endblock sonata_header %}
+{% block sonata_wrapper %}
+    {% block sonata_left_side %}
+        <aside class="main-sidebar">
+            <section id="entity_bar" class="sidebar">
+                {% block sonata_side_nav %}
+                    {% block sonata_sidebar_search %}
+                    {% endblock sonata_sidebar_search %}
+
+                    {% block side_bar_before_nav %} {% endblock %}
+                    {% block side_bar_nav %}
+                        {{ knp_menu_render('sonata_admin_sidebar', {template: get_global_template('knp_menu_template')}) }}
+                    {% endblock side_bar_nav %}
+                    {% block side_bar_after_nav %}
+                        <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px">
+                            {% block side_bar_after_nav_content %}
+                            {% endblock %}
+                        </p>
+                    {% endblock %}
+                {% endblock sonata_side_nav %}
+            </section>
+        </aside>
+    {% endblock sonata_left_side %}
+
+    <div class="content-wrapper">
+      {% block sonata_page_content %}
+        <div class="container">
+          <div>
+            <table class="table eradication-table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Station</th>
+                  <th scope="col">Espece</th>
+                  <th scope="col">Site</th>
+                  <th scope="col">Méthodes de gestion</th>
+                  <th scope="col">2012/2013</th>
+                  <th scope="col">2013/2014</th>
+                  <th scope="col">2014/2015</th>
+                  <th scope="col">2015/2016</th>
+                  <th scope="col">2016/2017</th>
+                  <th scope="col">2017/2018</th>
+                  <th scope="col">2018/2019</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for key,value in stationEvolution %}
+                  <tr>
+                    <td>{{key}}</a></td>
+                    <td>{{value.espece}}</td>
+                    <td>{{value.nom_site}}</td>
+                    {% if value.Annee1 is null %}
+                      <td style="background-color: gray;">Non renseignié</td>
+                    {% elseif value.Annee1 == "absence" %}
+                      <td style="background-color: green;">Absence</td>
+                    {% elseif value.Annee1 == "presence" %}
+                      <td style="background-color: red;">Présence</td>
+                    {% elseif value.Annee1 == "first" %}
+                      <td style="background-color: yellow;">Première</td>
+                    {% endif %}
+                    {% if value.Annee2 is null %}
+                      <td style="background-color: gray;">Non renseignié</td>
+                    {% elseif value.Annee2 == "absence" %}
+                      <td style="background-color: green;">Absence</td>
+                    {% elseif value.Annee2 == "presence" %}
+                      <td style="background-color: red;">Présence</td>
+                    {% elseif value.Annee2 == "first" %}
+                      <td style="background-color: yellow;">Première</td>
+                    {% endif %}
+                    {% if value.Annee3 is null %}
+                      <td style="background-color: gray;">Non renseignié</td>
+                    {% elseif value.Annee3 == "absence" %}
+                      <td style="background-color: green;">Absence</td>
+                    {% elseif value.Annee3 == "presence" %}
+                      <td style="background-color: red;">Présence</td>
+                    {% elseif value.Annee3 == "first" %}
+                      <td style="background-color: yellow;">Première</td>
+                    {% endif %}
+                    {% if value.Annee4 is null %}
+                      <td style="background-color: gray;">Non renseignié</td>
+                    {% elseif value.Annee4 == "absence" %}
+                      <td style="background-color: green;">Absence</td>
+                    {% elseif value.Annee4 == "presence" %}
+                      <td style="background-color: red;">Présence</td>
+                    {% elseif value.Annee4 == "first" %}
+                      <td style="background-color: yellow;">Première</td>
+                    {% endif %}
+                    {% if value.Annee5 is null %}
+                      <td style="background-color: gray;">Non renseignié</td>
+                    {% elseif value.Annee5 == "absence" %}
+                      <td style="background-color: green;">Absence</td>
+                    {% elseif value.Annee5 == "presence" %}
+                      <td style="background-color: red;">Présence</td>
+                    {% elseif value.Annee5 == "first" %}
+                      <td style="background-color: yellow;">Première</td>
+                    {% endif %}
+                    {% if value.Annee6 is null %}
+                      <td style="background-color: gray;">Non renseignié</td>
+                    {% elseif value.Annee6 == "absence" %}
+                      <td style="background-color: green;">Absence</td>
+                    {% elseif value.Annee6 == "presence" %}
+                      <td style="background-color: red;">Présence</td>
+                    {% elseif value.Annee6 == "first" %}
+                      <td style="background-color: yellow;">Première</td>
+                    {% endif %}
+                    {% if value.Annee7 is null %}
+                      <td style="background-color: gray;">Non renseignié</td>
+                    {% elseif value.Annee7 == "absence" %}
+                      <td style="background-color: green;">Absence</td>
+                    {% elseif value.Annee7 == "presence" %}
+                      <td style="background-color: red;">Présence</td>
+                    {% elseif value.Annee7 == "first" %}
+                      <td style="background-color: yellow;">Première</td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display: none;" id="serverIp" value="{{ server_ip }}">{{ server_ip }}</div>
+        <div id="builder"></div>
+        {{ parent() }}
+        <script src="{{ asset('js/HFIDashboard.js') }}"></script>
+      {% endblock %}
+    </div>
+{% endblock sonata_wrapper %}

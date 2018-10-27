@@ -1,0 +1,219 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    # - { resource: "@CommersonBundle/Resources/config/admin.yml"}
+    - { resource: "@OrnithoPinniBundle/Resources/config/admin.yml"}
+    - { resource: "@HFIBundle/Resources/config/services.yml" }
+    - { resource: "@PortalBundle/Resources/config/services.yml" }
+    - { resource: "@PortalBundle/Resources/config/config.yml" }
+    - { resource: "@FrequentationBundle/Resources/config/services.yml" }
+
+parameters:
+    locale: en
+
+framework:
+    #esi: ~
+    translator: ~
+    secret: '%secret%'
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    session:
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+    templating:
+        engines: ['twig']
+
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - '@SonataCore/Form/datepicker.html.twig'
+        - 'form/fields.html.twig'
+    globals:
+        server_ip: '%server_ip%'
+
+doctrine:
+    dbal:
+        # default_connection: default
+        types:
+            geography:
+                class: 'Jsor\Doctrine\PostGIS\Types\GeographyType'
+                commented: false
+            geometry:
+                class: 'Jsor\Doctrine\PostGIS\Types\GeometryType'
+                commented: false
+            raster:
+                class: 'Jsor\Doctrine\PostGIS\Types\RasterType'
+                commented: false
+            json: Sonata\Doctrine\Types\JsonType
+        connections:
+            user:
+                server_version: 9.3
+                driver:   pdo_pgsql
+                host:     '%database_host%'
+                port:     '%database_port%'
+                dbname:   '%database_name%'
+                user:     '%database_user%'
+                password: '%database_password%'
+                charset:  UTF8
+            frequentation:
+                server_version: 9.3
+                driver:   pdo_pgsql
+                host:     '%database_host%'
+                port:     '%database_port%'
+                dbname:   '%database_name3%'
+                user:     '%database_user%'
+                password: '%database_password%'
+                charset:  UTF8
+            hfi:
+                server_version: 9.3
+                driver:   pdo_pgsql
+                host:     '%database_host%'
+                port:     '%database_port%'
+                dbname:   '%database_name4%'
+                user:     '%database_user%'
+                password: '%database_password%'
+                charset:  UTF8
+            dauphin_commerson:
+                server_version: 9.3
+                driver:   pdo_pgsql
+                host:     '%database_host%'
+                port:     '%database_port%'
+                dbname:   '%database_name5%'
+                user:     '%database_user%'
+                password: '%database_password%'
+                charset:  UTF8
+            ornitho_pinni:
+                server_version: 9.3
+                driver:   pdo_pgsql
+                host:     '%database_host%'
+                port:     '%database_port%'
+                dbname:   '%database_name6%'
+                user:     '%database_user%'
+                password: '%database_password%'
+                charset:  UTF8
+    orm:
+        entity_managers:
+            user:
+                connection: user
+                mappings:
+                    ApplicationSonataUserBundle: ~
+                    SonataUserBundle: ~
+                    FOSUserBundle: ~
+            frequentation:
+                connection: frequentation
+                mappings:
+                    FrequentationBundle: ~
+            # phylica:
+            #     dql:
+            #         numeric_functions:
+            #             timestampdiff: Oro\ORM\Query\AST\Functions\Numeric\TimestampDiff
+            #             round: Oro\ORM\Query\AST\Functions\Numeric\Round
+            #             cast: Oro\ORM\Query\AST\Functions\Cast
+            #         string_functions:
+            #             ST_Distance_Sphere: Jsor\Doctrine\PostGIS\Functions\ST_Distance_Sphere
+            #             ST_SetSRID: Jsor\Doctrine\PostGIS\Functions\ST_SetSRID
+            #             ST_Point: Jsor\Doctrine\PostGIS\Functions\ST_Point
+            #             ST_Contains: Jsor\Doctrine\PostGIS\Functions\ST_Contains
+            #             ST_GeomFromText: Jsor\Doctrine\PostGIS\Functions\ST_GeomFromText
+            #     connection: phylica
+            #     mappings:
+            #         PhylicaBundle: ~
+            hfi:
+                dql:
+                    numeric_functions:
+                        timestampdiff: Oro\ORM\Query\AST\Functions\Numeric\TimestampDiff
+                        round: Oro\ORM\Query\AST\Functions\Numeric\Round
+                        cast: Oro\ORM\Query\AST\Functions\Cast
+                    string_functions:
+                        ST_Distance_Sphere: Jsor\Doctrine\PostGIS\Functions\ST_Distance_Sphere
+                        ST_SetSRID: Jsor\Doctrine\PostGIS\Functions\ST_SetSRID
+                        ST_Point: Jsor\Doctrine\PostGIS\Functions\ST_Point
+                        ST_Contains: Jsor\Doctrine\PostGIS\Functions\ST_Contains
+                        ST_GeomFromText: Jsor\Doctrine\PostGIS\Functions\ST_GeomFromText
+                connection: hfi
+                mappings:
+                    HFIBundle: ~
+            dauphin_commerson:
+                connection: dauphin_commerson
+                mappings:
+                    CommersonBundle: ~
+            ornitho_pinni:
+                connection: ornitho_pinni
+                mappings:
+                    OrnithoPinniBundle: ~
+
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.block.service.text:
+        sonata.block.service.rss:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.admin.block.search_result:
+            contexts: [admin]
+        sonata.admin.dashboard_phylica: ~
+        sonata.admin.dashboard_eradication: ~
+
+# sonata_block:
+#     blocks:
+#         sonata.block.service.text:
+#         sonata.block.service.rss:
+#         sonata.admin.block.admin_list:
+#             contexts: [admin]
+
+sonata_admin:
+    title: ResNatApp.v2.0
+    title_logo: images/logo.png
+    templates:
+      layout: 'general/top_bar.html.twig'
+      # list: 'general/list.html.twig'
+    security:
+      handler: sonata.admin.security.handler.role
+
+sonata_user:
+    security_acl: true
+    manager_type: orm
+    class:
+        user: Application\Sonata\UserBundle\Entity\User
+        group: Application\Sonata\UserBundle\Entity\Group
+
+fos_user:
+    db_driver:      orm
+    firewall_name:  main
+    user_class:     Application\Sonata\UserBundle\Entity\User
+
+    group:
+        group_class:   Application\Sonata\UserBundle\Entity\Group
+        group_manager: sonata.user.orm.group_manager
+
+    service:
+        user_manager: sonata.user.orm.user_manager
+
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
+
+swiftmailer:
+    transport: gmail
+    username:  '%mailer_user%'
+    password:  '%mailer_password%'

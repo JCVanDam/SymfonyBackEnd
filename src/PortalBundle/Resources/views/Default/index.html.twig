@@ -1,0 +1,72 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/img_tricks.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/loader.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/portal.css') }}" type="text/css" />
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/libs/jquery/3.3.1/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/libs/bootstrap/4.1.1/bootstrap.min.js') }}"></script>
+{% endblock %}
+
+{% block sonata_header %}
+  {% block logo %}
+  {% endblock %}
+  {% block sonata_nav %}
+  {% endblock %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container" style="overflow:hidden;background-color:#222d32;width:100%;position:fixed;top:0;color:white;z-index: 10;display:flex;align-items:center;justify-content:center;">
+      <img src="{{ asset('images/logo.png') }}" alt="logo réserve naturelle"  style="width:65px; margin-bottom: 5px;margin-top: 5px;border-radius: 3px;">
+      <div class="navbar-brand" style="text-align:center;font-size:30px;width:100%;">
+          Réserve naturelle des Terres Australes
+      </div>
+      <div class="navbar-custom-menu" style="margin-right: 15px;">
+        <a id="btn-logout" class="btn btn-primary"
+        href="{{ url('sonata_user_admin_security_logout') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </nav>
+{% endblock sonata_header %}
+
+{% block sonata_left_side %}
+{% endblock sonata_left_side %}
+
+{% block sonata_wrapper %}
+  <div class="content-wrapper" style="margin-left:0px;">
+
+  {% block sonata_page_content %}
+    <div class="container">
+      <h1 class="my-4">Applications
+        <small>- Accédez aux bases de données</small>
+      </h1>
+      <div class="row">
+        <div class="col-sm-6 col-md-6">
+          <div class="thumbnail">
+            <a href="/admin/hfi/observation/list"><img style="height: 350px;" class="hover-zoom" src="{{ asset('images/phylica-arborea.jpg') }}" alt="..."></a>
+            <div class="caption">
+              <h3>Habitat Flore Invértébré</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt, dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
+              <br><p><a href="/admin/hfi/observation/list" class="btn btn-primary" role="button">Accéder à cette base de données</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+          <div class="thumbnail">
+            <a href="/admin/ornithopinni/general-manip/list"><img style="height: 350px;" class="hover-zoom" src="{{ asset('images/canard-eaton.jpg') }}" alt="..."></a>
+            <div class="caption">
+              <h3>Ornithologie & Pinnipèdes</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt, dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
+              <br><p><a href="/admin/ornithopinni/general-manip/list" class="btn btn-primary" role="button">Accéder à cette base de données</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endblock sonata_page_content %}
+  </div>
+{% endblock %}

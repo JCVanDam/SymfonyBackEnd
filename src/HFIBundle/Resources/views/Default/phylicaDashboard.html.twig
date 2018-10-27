@@ -1,0 +1,204 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/map.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/ol.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/loader.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/top_bar.css') }}" type="text/css" />
+  <link rel="stylesheet" href="{{ asset('css/query-builder.css') }}" type="text/css" />
+  {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script src="{{ asset('js/libs/chart/2.4.0/Chart.min.js') }}"></script>
+  <script src="{{ asset('js/libs/popper/1.14.3/umd/popper.min.js') }}"></script>
+  <script src="{{ asset('js/libs/openlayers/4.6.5/ol.js') }}"></script>
+  <script src="{{ asset('js/libs/datepicker/0.6.5/datepicker.js') }}"></script>
+  <script src="{{ asset('js/libs/jQuery-QueryBuilder-master/dist/js/query-builder.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.2/doT.js"></script>
+  <script src="{{ asset('js/libs/jQuery.extendext/jQuery.extendext.min.js') }}"></script>
+  <script src="{{ asset('js/libs/jQuery-QueryBuilder-master/dist/js/query-builder.min.js') }}"></script>
+{% endblock %}
+
+{% block sonata_header %}
+    <header id="header_content" class="main-header">
+        {% block sonata_header_noscript_warning %}
+            <noscript>
+                <div class="noscript-warning">
+                    {{ 'noscript_warning'|trans({}, 'SonataAdminBundle') }}
+                </div>
+            </noscript>
+        {% endblock %}
+        {% block logo %}
+            {% spaceless %}
+                <a id="logo_content" class="logo" href="/admin/application">
+                    {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                        <img id="img_logo" src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
+                    {% endif %}
+                </a>
+            {% endspaceless %}
+        {% endblock %}
+        {% block sonata_nav %}
+            <nav id="bar" class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" >
+                    <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
+                </a>
+
+                <div class="navbar-left">
+                    {% block sonata_breadcrumb %}
+                        <div class="hidden-xs">
+                            {% if _breadcrumb is not empty or action is defined %}
+                                <ol class="nav navbar-top-links breadcrumb">
+                                    {% if _breadcrumb is empty %}
+                                        {% if action is defined %}
+                                            {% for menu in breadcrumbs_builder.breadcrumbs(admin, action) %}
+                                                {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
+                                                {%- set label = menu.label -%}
+                                                {%- if translation_domain is not same as(false) -%}
+                                                    {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
+                                                {%- endif -%}
+
+                                                {% if not loop.last %}
+                                                    <li>
+                                                        {% if menu.uri is not empty %}
+                                                            <a href="{{ menu.uri }}">
+                                                                {% if menu.extra('safe_label', true) %}
+                                                                    {{- label|raw -}}
+                                                                {% else %}
+                                                                    {{- label -}}
+                                                                {% endif %}
+                                                            </a>
+                                                        {% else %}
+                                                            <span>{{ label }}</span>
+                                                        {% endif %}
+                                                    </li>
+                                                {% else %}
+                                                    <li class="active"><span>{{ label }}</span></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ _breadcrumb|raw }}
+                                    {% endif %}
+                                </ol>
+                            {% endif %}
+                        </div>
+                    {% endblock sonata_breadcrumb %}
+                </div>
+
+                {% block sonata_top_nav_menu %}
+                    <div id="username">
+                      {{ app.user }}
+                    </div>
+                    <div class="navbar-custom-menu">
+                      <a id="btn_bar" class="btn btn-primary"
+                        href="/admin/dashboard?service={{app.session.get('service') }}"
+                        >Menu principal</a>
+                    </div>
+                    <div class="navbar-custom-menu">
+                      <a id="btn_bar" class="btn btn-primary"
+                        href="{{ url('sonata_user_admin_security_logout') }}">{{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}</a>
+                    </div>
+                {% endblock %}
+            </nav>
+        {% endblock sonata_nav %}
+    </header>
+{% endblock sonata_header %}
+{% block sonata_wrapper %}
+    {% block sonata_left_side %}
+        <aside class="main-sidebar">
+            <section id="entity_bar" class="sidebar">
+                {% block sonata_side_nav %}
+                    {% block sonata_sidebar_search %}
+                    {% endblock sonata_sidebar_search %}
+
+                    {% block side_bar_before_nav %} {% endblock %}
+                    {% block side_bar_nav %}
+                        {{ knp_menu_render('sonata_admin_sidebar', {template: get_global_template('knp_menu_template')}) }}
+                    {% endblock side_bar_nav %}
+                    {% block side_bar_after_nav %}
+                        <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px">
+                            {% block side_bar_after_nav_content %}
+                            {% endblock %}
+                        </p>
+                    {% endblock %}
+                {% endblock sonata_side_nav %}
+            </section>
+        </aside>
+    {% endblock sonata_left_side %}
+
+    <div class="content-wrapper">
+      {% block sonata_page_content %}
+        <div id="volumePerDate" style="display:none;">{{volumePerDate}}</div>
+        <div id="volumeAge" style="display:none;">{{volumeAge}}</div>
+        <div id="coordinate" style="display:none;">{{coordinate}}</div>
+        <div class="container">
+          <div style="display:flex; background-color:#F8F8F8; border:black; margin:15px; border-radius:5px;">
+            <div>
+              <table id="volume-per-year" class="table static-table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Année</th>
+                    <th scope="col">Nombre Phylica</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in volumePerYear %}
+                  <tr>
+                    <td>{{item.year}}</td>
+                    <td>{{item.counter}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <table id="general-data" class="table static-table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Total</th>
+                    <th scope="col">Moyenne de Phylica planté par an</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ total }}</td>
+                    <td>{{ average }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="mapContainer">
+              <div id="map" class="map" style="width:600px"></div>
+            </div>
+          </div>
+          <div id="specific">
+            <div class="row">
+              <div class="col-md-11" id="builder-import_export"></div>
+            </div>
+            <button class="col-md-2 btn btn-primary parse-sql" id="btn-get-sql-search" data-target="import_export" data-stmt="false">Chercher</button>
+            <button class="col-md-2 btn btn-primary parse-sql" id="btn-get-sql-export" data-target="import_export" data-stmt="false">Exporter</button>
+            <div class="row">
+            </div>
+            <div class="row">
+              <!-- style="width:400px;height:400px;"  -->
+              <div class="col-md-4 chart-item" id="graphVolumeAgeContent">
+                <canvas id="graphVolumeAge"></canvas>
+              </div>
+              <!-- style="width:600px;" -->
+              <div class="col-md-6 chart-item" id="graphVolumeDateContent">
+                <canvas id="graphVolumeDate" id="line"></canvas>
+              </div>
+            </div>
+          </div>
+          <div id="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div>
+        <div style="display: none;" id="serverIp" value="{{ server_ip }}">{{ server_ip }}</div>
+        {{ parent() }}
+        <script src="{{ asset('js/chart.js') }}"></script>
+      {% endblock %}
+
+    </div>
+{% endblock sonata_wrapper %}

@@ -1,0 +1,7 @@
+commerson_homepage:
+    path:     /
+    defaults: { _controller: CommersonBundle:Default:index }
+
+commerson_test:
+    path:     /test
+    defaults: { _controller: CommersonBundle:Default:test }

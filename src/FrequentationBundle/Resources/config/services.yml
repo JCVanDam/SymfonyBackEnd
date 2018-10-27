@@ -1,0 +1,18 @@
+services:
+    sonata.admin.manipe:
+      class: FrequentationBundle\Admin\ManipeAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Fréquentation', label: 'Manipe' }
+      arguments: [~, FrequentationBundle\Entity\Manipe, ~]
+
+    sonata.admin.manipeur:
+      class: FrequentationBundle\Admin\ManipeurAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Fréquentation', label: 'Manipeur' }
+      arguments: [~, FrequentationBundle\Entity\Manipeur, ~]
+
+    sonata.admin.mouvement:
+      class: FrequentationBundle\Admin\MouvementAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: 'Fréquentation', label: 'Mouvement' }
+      arguments: [~, FrequentationBundle\Entity\Mouvement, ~]

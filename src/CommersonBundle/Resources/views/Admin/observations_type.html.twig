@@ -1,0 +1,35 @@
+{% block field%}
+  <td colspan="2">
+    <div class="row">
+      {% for obs in object.getObservations %}
+          <div class="col-sm-6 col-md-3">
+            <div class="thumbnail">
+              {% set images = obs.getImages %}
+              {% if images is empty %}
+                  <img style="width:100%; height: 200px; object-fit: cover;" src="{{ app.request.getBaseURL() }}/images/no_picture.jpg" alt="no_picture.jpg"/>
+              {% else %}
+                  <img style="width:100%; height: 200px; object-fit: cover;" src="{{images[0].getTwigPath}}" alt="{{images[0].getFilename}}"/>
+
+              {% endif %}
+
+              <div class="caption">
+                <h3>Obs. N°{{obs.getId}}</h3>
+                <h4>{{obs.getCodeObservation}}</h4>
+                <p>
+                  <a href="/admin/commerson/observation/{{ obs.getId }}/edit" class="btn btn-primary" role="button">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                  </a>
+                  <a href="/admin/commerson/observation/{{ obs.getId }}/show" class="btn btn-default" role="button">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                  </a>
+                  <a href="/admin/commerson/observation/{{ obs.getId }}/delete" class="btn btn-danger" role="button">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+  </td>
+{% endblock %}

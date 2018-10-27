@@ -1,0 +1,41 @@
+hfi:
+  resource: "@HFIBundle/Controller/"
+  type:     annotation
+  prefix:   /
+
+application:
+  resource: "@PortalBundle/Controller/"
+  type:     annotation
+  # prefix:   /admin/application
+
+frequentation:
+  resource: "@FrequentationBundle/Controller/"
+  type:     annotation
+  # prefix:   /frequentation
+  prefix:   /
+
+dauphin_commerson:
+    resource: "@CommersonBundle/Resources/config/routing.yml"
+    prefix:   /commerson
+
+ornitho_pinni:
+    resource: "@OrnithoPinniBundle/Resources/config/routing.yml"
+    prefix:   /ornithopinni
+
+admin_area:
+  resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+  prefix: /admin
+
+_sonata_admin:
+  resource: .
+  type: sonata_admin
+  prefix: /admin
+
+sonata_user_admin_security:
+  resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+  prefix: /admin
+
+# Using for logout
+sonata_user_admin_resetting:
+  resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
+  prefix: /admin/resetting
